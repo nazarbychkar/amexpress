@@ -1,6 +1,6 @@
 import Category from "@/components/Category";
 import { validCategories } from "@/constants/categories";
-
+// TODO: make it prerendered
 export default async function CategoryPage({
   params,
 }: {
