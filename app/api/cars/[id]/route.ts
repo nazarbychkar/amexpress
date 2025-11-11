@@ -4,11 +4,11 @@ import { prisma } from "@/lib/db";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const car = await prisma.car.findUnique({
-      where: { id: Number(params.id) }, // або { id: params.id } якщо у Prisma id string
+      where: { id: Number((await params).id) }, // або { id: params.id } якщо у Prisma id string
     });
 
     if (!car) {
@@ -26,13 +26,13 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const data = await req.json();
 
     const updatedCar = await prisma.car.update({
-      where: { id: Number(params.id) },
+      where: { id: Number((await params).id) },
       data: data, // Тут можна фільтрувати тільки дозволені поля
     });
 
@@ -47,11 +47,11 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await prisma.car.delete({
-      where: { id: Number(params.id) },
+      where: { id: Number((await params).id) },
     });
 
     return NextResponse.json({ message: "Машина видалена" });

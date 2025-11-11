@@ -178,7 +178,10 @@ export default async function Page({ searchParams }: PageProps) {
                   | undefined;
                 createdAt: string | number | Date;
               }) => (
-                <tr key={car.id} className="hover:bg-gray-50 transition-colors">
+                <tr
+                  key={String(car.id)}
+                  className="hover:bg-gray-50 transition-colors"
+                >
                   <td className="px-4 py-2 text-sm text-gray-600">{car.id}</td>
                   <td className="px-4 py-2 text-sm text-gray-600">
                     {car.brand}

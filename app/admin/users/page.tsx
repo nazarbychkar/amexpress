@@ -165,7 +165,7 @@ export default async function Page({ searchParams }: PageProps) {
                 createdAt: string | number | Date;
               }) => (
                 <tr
-                  key={user.id}
+                  key={String(user.id)}
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <td className="px-4 py-2 text-sm text-gray-600">{user.id}</td>
