@@ -1,10 +1,9 @@
 import { PrismaClient } from "../lib/generated/prisma";
 
-const prisma = new PrismaClient();
+const globalForPrisma = globalThis as any;
 
-async function main() {}
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({ log: ["query", "error", "warn"] });
 
-main().catch((e) => {
-  console.error(e);
-  prisma.$disconnect();
-});
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
