@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Car {
+  id                 Int     @id @default(autoincrement())  // Унікальний ідентифікатор
+  tildaUid           String  @unique                     // Tilda UID
+  brand              String  // Бренд
+  sku                String  // SKU
+  mark               String  // Марка
+  category           String  // Категорія
+  title              String  // Заголовок
+  description        String  // Опис
+  text               String  // Текст
+  photo              String? // Фото (може бути null)
+  price              Float   // Ціна
+  quantity           Int     // Кількість
+  priceOld           Float?  // Стара ціна (може бути null)
+  editions           String? // Видання (може бути null)
+  modifications      String? // Модифікації (може бути null)
+  externalId         String? // Зовнішній ID (може бути null)
+  parentUid          String? // Parent UID (може бути null)
+  
+  // Characteristics fields
+  engineType         String  // Тип двигуна
+  engineVolume       Float   // Об'єм двигуна
+  transmission       String  // Коробка передач
+  driveType          String  // Привід
+  year               Int     // Рік
+  enginePower        Float   // Потужність двигуна
+  priceUSD           Float   // Ціна в доларах
+  countryOfOrigin    String  // Країна виробник
+  mileage            Int     // Пробіг
+  weight             Float   // Вага
+  length             Float   // Довжина
+  width              Float   // Ширина
+  height             Float   // Висота
+
+  createdAt          DateTime @default(now()) // Дата створення
+  updatedAt          DateTime @updatedAt     // Дата оновлення
+}
+
+model User {
+  id            Int      @id @default(autoincrement())  // Унікальний ідентифікатор
+  telegramId    Int      @unique                     // Telegram ID (унікальний)
+  username      String?  // Username в Telegram
+  firstName     String   // Перше ім’я
+  lastName      String?  // Прізвище (може бути null)
+  languageCode  String   // Мова
+  chatId        Int?     // ID чату (може бути null)
+  isBot         Boolean  // Чи є бот
+
+  createdAt     DateTime @default(now()) // Дата створення
+  updatedAt     DateTime @updatedAt     // Дата оновлення
+}
