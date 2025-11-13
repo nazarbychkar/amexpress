@@ -1,30 +1,29 @@
 // app/api/cars/route.ts
-import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const skip = Number(searchParams.get("skip") ?? 0);
-    const take = Number(searchParams.get("take") ?? 10);
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const query = searchParams.get("q") || "";
 
-    const [cars, total] = await Promise.all([
-      prisma.car.findMany({
-        skip,
-        take,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.car.count(),
-    ]);
+  const cars = await prisma.car.findMany({
+    where: {
+      title: {
+        contains: query,
+        mode: "insensitive",
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      price: true,
+      photo: true,
+      category: true,
+    },
+  });
 
-    return NextResponse.json({ cars, total });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { error: "Не вдалося отримати машини" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(cars);
 }
 
 export async function POST(req: NextRequest) {

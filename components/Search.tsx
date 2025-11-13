@@ -1,51 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
+interface Car {
+  id: string | number;
+  photo: string;
+  title: string;
+  category: string;
+  price: string | number;
+}
 
 export default function Search() {
   const [query, setQuery] = useState("");
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Example car dataset (replace with real data or API)
-  const cars = [
-    {
-      id: 1,
-      name: "Toyota Camry",
-      cost: "18 500 $",
-      year: 2018,
-      image: "/images/cars/camry.jpg",
-    },
-    {
-      id: 2,
-      name: "Nissan Leaf",
-      cost: "12 900 $",
-      year: 2020,
-      image: "/images/cars/leaf.jpg",
-    },
-    {
-      id: 3,
-      name: "Ford Ranger",
-      cost: "25 000 $",
-      year: 2019,
-      image: "/images/cars/ranger.jpg",
-    },
-    {
-      id: 4,
-      name: "Hyundai Tucson",
-      cost: "21 300 $",
-      year: 2021,
-      image: "/images/cars/tucson.jpg",
-    },
-  ];
+  useEffect(() => {
+    if (!query) {
+      setCars([]);
+      return;
+    }
 
-  const filtered = cars.filter((car) =>
-    car.name.toLowerCase().includes(query.toLowerCase())
-  );
+    const fetchCars = async () => {
+      setLoading(true);
+      const res = await fetch(`/api/cars?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      setCars(data);
+      setLoading(false);
+    };
+
+    fetchCars();
+  }, [query]);
 
   return (
     <section className="min-h-screen bg-gray-50 px-6">
       <div className="max-w-2xl mx-auto">
-        {/* --- Search Input --- */}
+        {/* Search Input */}
         <div className="mb-6">
           <input
             type="text"
@@ -56,18 +48,21 @@ export default function Search() {
           />
         </div>
 
-        {/* --- Results List --- */}
+        {/* Results */}
         <div className="space-y-4">
-          {filtered.length > 0 ? (
-            filtered.map((car) => (
-              <div
+          {loading ? (
+            <p className="text-gray-500 text-center py-8">Завантаження...</p>
+          ) : cars.length > 0 ? (
+            cars.map((car) => (
+              <Link
+                href={`/car/${car.id}`}
                 key={car.id}
                 className="bg-white rounded-lg shadow hover:shadow-md transition flex items-center p-4"
               >
                 <div className="relative w-24 h-16 shrink-0 rounded overflow-hidden">
                   <Image
-                    src={car.image}
-                    alt={car.name}
+                    src={car.photo?.split(" ")[0] || "/placeholder.png"}
+                    alt={car.title}
                     fill
                     className="object-cover"
                   />
@@ -75,15 +70,17 @@ export default function Search() {
 
                 <div className="ml-4 flex-1">
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {car.name}
+                    {car.title}
                   </h3>
-                  <p className="text-gray-500 text-sm">Рік: {car.year}</p>
+                  <p className="text-gray-500 text-sm">
+                    Категорія: {car.category}
+                  </p>
                 </div>
 
                 <div className="text-red-500 font-semibold text-base">
-                  {car.cost}
+                  {car.price} ₴
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
             query && (

@@ -1,4 +1,5 @@
 // app/admin/page.tsx
+import ImageUpload from "@/components/ImageUpload";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 
@@ -53,7 +54,7 @@ export default async function Admin() {
         </div>
       </div>
 
-      {/* Optional: Add more cards for analytics, charts, etc. */}
+      {/* <ImageUpload /> */}
     </div>
   );
 }
