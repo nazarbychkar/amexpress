@@ -2,11 +2,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const cars = await prisma.car.findMany();
-    return NextResponse.json(cars);
+    const { searchParams } = new URL(req.url);
+    const skip = Number(searchParams.get("skip") ?? 0);
+    const take = Number(searchParams.get("take") ?? 10);
+
+    const [cars, total] = await Promise.all([
+      prisma.car.findMany({
+        skip,
+        take,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.car.count(),
+    ]);
+
+    return NextResponse.json({ cars, total });
   } catch (err) {
+    console.error(err);
     return NextResponse.json(
       { error: "Не вдалося отримати машини" },
       { status: 500 }

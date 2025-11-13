@@ -22,11 +22,13 @@ export default function Catalog() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {validCategories.map((category) => (
-          <Link key={category} href={`/${category}`} passHref>
+          <Link key={category} href={`/catalog/${category}`} passHref>
             <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer grid grid-cols-2 items-center">
               {/* ✅ Display icon */}
               <div className="">
-                {categoryIcons[category as keyof typeof categoryIcons] || <FaCarSide className="h-8 w-8" />}
+                {categoryIcons[category as keyof typeof categoryIcons] || (
+                  <FaCarSide className="h-8 w-8" />
+                )}
               </div>
 
               <h2 className="text-lg font-semibold capitalize text-left">
