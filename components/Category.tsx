@@ -20,8 +20,10 @@ interface CategoryProps {
 // Map Ukrainian category names in the DB → internal slugs
 const CATEGORY_MAP: Record<string, string> = {
   Седани: "sedan",
-  "Позашляховики / Кросовери": "crosovers",
+  Позашляховики: "crosovers",
+  Кросовери: "crosovers",
   Хетчбеки: "hatchback",
+  Пiкапи: "pickup",
   Главная: "main",
 };
 
@@ -69,7 +71,7 @@ export default async function Category({ category, page }: CategoryProps) {
   const pagedCars = filteredCars.slice(skip, skip + PAGE_SIZE);
 
   return (
-    <div className="p-6">
+    <div className="py-6">
       {/* <h1 className="text-2xl font-bold mb-6 text-gray-800">
         Каталог автомобілів{" "}
         {category && <span className="text-blue-600">({category})</span>}
