@@ -7,8 +7,11 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const carId = Number((await params).id);
+    console.log("carId", carId);
+
     const car = await prisma.car.findUnique({
-      where: { id: Number((await params).id) }, // або { id: params.id } якщо у Prisma id string
+      where: { id: carId },
     });
 
     if (!car) {
@@ -20,24 +23,27 @@ export async function GET(
 
     return NextResponse.json(car);
   } catch (err) {
+    console.log("GET car error:", err);
     return NextResponse.json({ error: "Помилка сервера" }, { status: 500 });
   }
 }
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
+    const carId = Number(params.id);
     const data = await req.json();
 
     const updatedCar = await prisma.car.update({
-      where: { id: Number((await params).id) },
-      data: data, // Тут можна фільтрувати тільки дозволені поля
+      where: { id: carId },
+      data,
     });
 
     return NextResponse.json(updatedCar);
   } catch (err) {
+    console.error("UPDATE car error:", err);
     return NextResponse.json(
       { error: "Не вдалося оновити машину" },
       { status: 500 }
@@ -50,12 +56,15 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const carId = Number((await params).id);
+
     await prisma.car.delete({
-      where: { id: Number((await params).id) },
+      where: { id: carId },
     });
 
     return NextResponse.json({ message: "Машина видалена" });
   } catch (err) {
+    console.error("DELETE car error:", err);
     return NextResponse.json(
       { error: "Не вдалося видалити машину" },
       { status: 500 }

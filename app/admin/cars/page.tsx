@@ -1,4 +1,4 @@
-// app/admin/cars/page.tsx
+import DeleteButton from "@/components/DeleteButton";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import {
@@ -14,12 +14,11 @@ export const revalidate = 0; // disables ISR
 const PAGE_SIZE = 15;
 
 interface PageProps {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const params = await searchParams; // unwrap the promise
-  const page = Math.max(1, parseInt(params.page || "1", 10));
+  const page = Math.max(1, parseInt((await searchParams)?.page || "1", 10));
   const skip = (page - 1) * PAGE_SIZE;
 
   const [cars, totalCars] = await Promise.all([
@@ -39,20 +38,35 @@ export default async function Page({ searchParams }: PageProps) {
         Таблиця Автомобілі
       </h1>
 
+      <div className="flex justify-center pb-5">
+        <Link
+          href="/admin/cars/add"
+          className="bg-blue-500 text-white py-2 w-full text-center rounded hover:bg-blue-600 transition"
+        >
+          Додати автомобіль
+        </Link>
+      </div>
+
       <div className="overflow-x-auto border rounded-lg shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {["ID", "Brand", "Title", "Price", "Year", "Created At"].map(
-                (header) => (
-                  <th
-                    key={header}
-                    className="px-4 py-2 text-left text-sm font-semibold text-gray-700"
-                  >
-                    {header}
-                  </th>
-                )
-              )}
+              {[
+                "ID",
+                "Brand",
+                "Title",
+                "Price",
+                "Year",
+                "Created At",
+                "Actions",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="px-4 py-2 text-left text-sm font-semibold text-gray-700"
+                >
+                  {header}
+                </th>
+              ))}
             </tr>
           </thead>
 
@@ -179,7 +193,7 @@ export default async function Page({ searchParams }: PageProps) {
                 createdAt: string | number | Date;
               }) => (
                 <tr
-                  key={String(car.id)}
+                  key={Number(car.id)}
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <td className="px-4 py-2 text-sm text-gray-600">{car.id}</td>
@@ -198,6 +212,18 @@ export default async function Page({ searchParams }: PageProps) {
                   <td className="px-4 py-2 text-sm text-gray-600">
                     {new Date(car.createdAt).toLocaleDateString()}
                   </td>
+
+                  {/* ACTIONS */}
+                  <td className="px-4 py-2 flex gap-2">
+                    <Link
+                      href={`/admin/cars/${car.id}`}
+                      className="px-3 py-1 rounded bg-yellow-500 text-white text-sm hover:bg-yellow-600 transition"
+                    >
+                      Edit
+                    </Link>
+
+                    <DeleteButton carId={Number(car.id)} />
+                  </td>
                 </tr>
               )
             )}
@@ -209,7 +235,7 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="mt-4 flex justify-center space-x-2">
         {Array.from({ length: totalPages }, (_, i) => (
           <Link
-            key={i + 1}
+            key={i}
             href={`/admin/cars?page=${i + 1}`}
             className={`px-3 py-1 rounded-md border ${
               page === i + 1

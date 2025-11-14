@@ -1,9 +1,10 @@
 // app/api/cars/route.ts
 import { prisma } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(request: Promise<Request>) {
+  const { searchParams } = new URL((await request).url);
   const query = searchParams.get("q") || "";
 
   const cars = await prisma.car.findMany({
@@ -26,57 +27,50 @@ export async function GET(request: Request) {
   return NextResponse.json(cars);
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Promise<Request>) {
   try {
-    const data = await req.json();
+    const data = await (await request).json();
 
-    // Обов'язкові поля
-    if (!data.brand || !data.title || !data.price) {
-      return NextResponse.json(
-        { error: "Відсутні обов'язкові поля" },
-        { status: 400 }
-      );
-    }
-
-    const newCar = await prisma.car.create({
+    const car = await prisma.car.create({
       data: {
-        tildaUid: String(data.tildaUid || ""),
-        brand: String(data.brand || "Unknown"), // default якщо пусто
-        sku: String(data.sku || ""),
-        mark: String(data.mark || ""),
-        category: String(data.category || ""),
-        title: String(data.title || "No title"),
-        description: data.description ?? "",
-        text: data.text ?? "",
-        photo: data.photo ?? null,
-        price: Number(data.price) || 0, // якщо NaN → 0
-        quantity: Number(data.quantity ?? 0),
-        priceOld: data.priceOld ? Number(data.priceOld) : null,
-        editions: data.editions ?? null,
-        modifications: data.modifications ?? null,
-        externalId: data.externalId ?? null,
-        parentUid: data.parentUid ?? null,
-        engineType: data.engineType ?? "",
-        engineVolume: Number(data.engineVolume) || 0,
-        transmission: data.transmission ?? "",
-        driveType: data.driveType ?? "",
-        year: Number(data.year) || 0,
-        enginePower: Number(data.enginePower) || 0,
-        priceUSD: Number(data.priceUSD) || 0,
-        countryOfOrigin: data.countryOfOrigin ?? "",
-        mileage: Number(data.mileage) || 0,
-        weight: Number(data.weight) || 0,
-        length: Number(data.length) || 0,
-        width: Number(data.width) || 0,
-        height: Number(data.height) || 0,
+        tildaUid: data.tildaUid,
+        brand: data.brand,
+        sku: data.sku,
+        mark: data.mark,
+        category: data.category,
+        title: data.title,
+        description: data.description,
+        text: data.text,
+        photo: data.photo || null,
+        price: parseFloat(data.price),
+        quantity: parseInt(data.quantity),
+        priceOld: data.priceOld ? parseFloat(data.priceOld) : null,
+        editions: data.editions || null,
+        modifications: data.modifications || null,
+        externalId: data.externalId || null,
+        parentUid: data.parentUid || null,
+        engineType: data.engineType,
+        engineVolume: parseFloat(data.engineVolume),
+        transmission: data.transmission,
+        driveType: data.driveType,
+        year: parseInt(data.year),
+        enginePower: parseFloat(data.enginePower),
+        priceUSD: parseFloat(data.priceUSD),
+        countryOfOrigin: data.countryOfOrigin,
+        mileage: parseInt(data.mileage),
+        weight: parseFloat(data.weight),
+        length: parseFloat(data.length),
+        width: parseFloat(data.width),
+        height: parseFloat(data.height),
       },
     });
 
-    return NextResponse.json(newCar, { status: 201 });
-  } catch (err) {
-    console.error(err);
+    return NextResponse.json(car, { status: 201 });
+  } catch (error) {
+    console.error("Error creating car:", error);
+
     return NextResponse.json(
-      { error: "Не вдалося додати машину" },
+      { message: "Internal server error" },
       { status: 500 }
     );
   }

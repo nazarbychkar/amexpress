@@ -39,47 +39,45 @@ type PrismaConnectorCars = {
   $disconnect: () => any;
 };
 
-export async function upload_cars(prisma: PrismaConnectorCars) {
-  // 1️⃣ Зчитуємо файл
-  const workbook = XLSX.readFile("cars.xlsx");
+export async function upload_cars(
+  workbook: XLSX.WorkBook,
+  prisma: PrismaConnectorCars
+) {
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
 
-  // 2️⃣ Конвертуємо у масив об’єктів
   const carsData = XLSX.utils.sheet_to_json<Record<string, any>>(worksheet);
 
-  console.log(`Знайдено ${carsData.length} рядків у Excel`);
+  console.log(`Found ${carsData.length} rows`);
 
-  // 3️⃣ Додаємо кожен запис у базу
   for (const data of carsData) {
     try {
-      // Переконайся, що всі потрібні поля є
       await prisma.car.create({
         data: {
           tildaUid: String(data.tildaUid || ""),
-          brand: String(data.brand || "Unknown"), // default якщо пусто
+          brand: String(data.brand || "Unknown"),
           sku: String(data.sku || ""),
           mark: String(data.mark || ""),
           category: String(data.category || ""),
           title: String(data.title || "No title"),
-          description: data.description ?? "",
-          text: data.text ?? "",
-          photo: data.photo ?? null,
-          price: Number(data.price) || 0, // якщо NaN → 0
+          description: String(data.description) ?? "",
+          text: String(data.text) ?? "",
+          photo: String(data.photo) ?? null,
+          price: Number(data.price) || 0,
           quantity: Number(data.quantity ?? 0),
           priceOld: data.priceOld ? Number(data.priceOld) : null,
-          editions: data.editions ?? null,
-          modifications: data.modifications ?? null,
-          externalId: data.externalId ?? null,
-          parentUid: data.parentUid ?? null,
-          engineType: data.engineType ?? "",
+          editions: String(data.editions) ?? null,
+          modifications: String(data.modifications) ?? null,
+          externalId: String(data.externalId) ?? null,
+          parentUid: String(data.parentUid) ?? null,
+          engineType: String(data.engineType) ?? "",
           engineVolume: Number(data.engineVolume) || 0,
-          transmission: data.transmission ?? "",
-          driveType: data.driveType ?? "",
+          transmission: String(data.transmission) ?? "",
+          driveType: String(data.driveType) ?? "",
           year: Number(data.year) || 0,
           enginePower: Number(data.enginePower) || 0,
           priceUSD: Number(data.priceUSD) || 0,
-          countryOfOrigin: data.countryOfOrigin ?? "",
+          countryOfOrigin: String(data.countryOfOrigin) ?? "",
           mileage: Number(data.mileage) || 0,
           weight: Number(data.weight) || 0,
           length: Number(data.length) || 0,
@@ -88,7 +86,7 @@ export async function upload_cars(prisma: PrismaConnectorCars) {
         },
       });
     } catch (err) {
-      console.error("Помилка при додаванні запису:", err);
+      console.error("Row insert error:", err);
     }
   }
 

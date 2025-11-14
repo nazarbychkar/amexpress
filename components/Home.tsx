@@ -188,6 +188,7 @@ export default async function HomePage() {
             }) => (
               <Link
                 href={`/car/${car.id}`}
+                key={car.id}
                 className="bg-white rounded-lg shadow hover:shadow-md p-4 flex flex-col items-center"
               >
                 <div className="w-full h-32 relative mb-3">

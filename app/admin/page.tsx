@@ -2,6 +2,7 @@
 import ImageUpload from "@/components/ImageUpload";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
+import CarExcelUpload from "@/components/CarExcelUpload";
 
 export const revalidate = 0; // disables ISR
 
@@ -53,6 +54,8 @@ export default async function Admin() {
           </ul>
         </div>
       </div>
+
+      <CarExcelUpload />
 
       {/* <ImageUpload /> */}
     </div>
