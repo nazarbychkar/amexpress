@@ -1,14 +1,22 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-gray-800 to-gray-700 shadow-lg">
-      <div className="max-w-6xl mx-auto flex justify-center items-center py-4">
+    <header className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md bg-white/80 shadow-sm">
+      <div className="max-w-6xl mx-auto flex justify-center items-center py-3">
         <Link
           href="/"
-          className="text-2xl font-extrabold bg-clip-text text-red-400 tracking-widest hover:scale-105 transition-all"
+          className="flex items-center hover:scale-105 transition-all"
         >
-          AmeXpress
+          <Image
+            src="/logo1199.svg"
+            alt="AmeXpress"
+            width={180}
+            height={60}
+            className="h-12 w-auto"
+            priority
+          />
         </Link>
       </div>
     </header>

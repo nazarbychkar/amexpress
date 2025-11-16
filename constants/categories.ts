@@ -1,4 +1,4 @@
-export const validCategories = ["sedan", "hatchback", "pickup", "crosovers", "main"];
+export const validCategories = ["sedan", "hatchback", "pickup", "crosovers", "suv", "main"];
 
 export const CATEGORY_MAP: Record<string, string> = {
   Седани: "Седани",

@@ -1,0 +1,26 @@
+{
+  "sedan": {
+    "name": "Седани",
+    "image": "/categories/sedan.avif"
+  },
+  "hatchback": {
+    "name": "Хетчбеки",
+    "image": "/categories/hatchback.avif"
+  },
+  "pickup": {
+    "name": "Пікапи",
+    "image": "/categories/pickup.avif"
+  },
+  "crosovers": {
+    "name": "Кросовери",
+    "image": "/categories/crosovers.avif"
+  },
+  "main": {
+    "name": "Головна",
+    "image": "/categories/main.avif"
+  },
+  "suv": {
+    "name": "Позашляховики",
+    "image": "/categories/suv.jpg"
+  }
+}

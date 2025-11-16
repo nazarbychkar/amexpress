@@ -31,6 +31,29 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
+    // Validate required fields
+    if (!data.tildaUid || data.tildaUid.trim() === "") {
+      return NextResponse.json(
+        { message: "tildaUid є обов'язковим полем" },
+        { status: 400 }
+      );
+    }
+
+    // Check if tildaUid already exists
+    const existingCar = await prisma.car.findUnique({
+      where: { tildaUid: data.tildaUid },
+    });
+
+    if (existingCar) {
+      return NextResponse.json(
+        { 
+          message: "Автомобіль з таким tildaUid вже існує. Будь ласка, згенеруйте новий tildaUid.",
+          code: "P2002"
+        },
+        { status: 409 }
+      );
+    }
+
     const car = await prisma.car.create({
       data: {
         tildaUid: data.tildaUid,
@@ -55,7 +78,7 @@ export async function POST(request: NextRequest) {
         driveType: data.driveType,
         year: parseInt(data.year),
         enginePower: parseFloat(data.enginePower),
-        priceUSD: parseFloat(data.priceUSD),
+        priceUSD: String(data.priceUSD),
         countryOfOrigin: data.countryOfOrigin,
         mileage: parseInt(data.mileage),
         weight: parseFloat(data.weight),
@@ -66,11 +89,23 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(car, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating car:", error);
 
+    // Handle Prisma unique constraint violation
+    if (error.code === "P2002") {
+      const field = error.meta?.target?.[0] || "tildaUid";
+      return NextResponse.json(
+        { 
+          message: `Автомобіль з таким ${field} вже існує. Будь ласка, згенеруйте новий ${field}.`,
+          code: "P2002"
+        },
+        { status: 409 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: error.message || "Internal server error" },
       { status: 500 }
     );
   }

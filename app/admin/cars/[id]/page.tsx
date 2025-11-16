@@ -5,24 +5,44 @@ import { useRouter, useParams } from "next/navigation";
 
 export default function EditCarPage() {
   const router = useRouter();
-  const { id } = useParams(); // /cars/edit/[id]
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Load car data
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setError("ID не знайдено");
+      setLoading(false);
+      return;
+    }
 
     const fetchCar = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const res = await fetch(`/api/cars/${id}`);
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Не вдалося завантажити дані");
+        }
+        
         const data = await res.json();
+        
+        if (!data || !data.id) {
+          throw new Error("Дані автомобіля не знайдено");
+        }
 
         setFormData(data);
         setLoading(false);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error loading car:", err);
+        setError(err.message || "Помилка завантаження даних");
+        setLoading(false);
       }
     };
 
@@ -38,25 +58,59 @@ export default function EditCarPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch(`/api/cars/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    if (!id) {
+      alert("ID не знайдено");
+      return;
+    }
 
-    if (response.ok) {
-      alert("Car updated successfully!");
-      router.push("/cars"); // redirect to list
-    } else {
-      const error = await response.json();
-      alert("Error: " + error.message);
+    try {
+      const response = await fetch(`/api/cars/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Автомобіль успішно оновлено!");
+        router.push("/admin/cars");
+      } else {
+        const error = await response.json();
+        alert("Помилка: " + (error.error || error.message || "Невідома помилка"));
+      }
+    } catch (err: any) {
+      console.error("Error updating car:", err);
+      alert("Помилка: " + (err.message || "Не вдалося оновити автомобіль"));
     }
   };
 
-  if (loading || !formData)
+  if (loading) {
     return (
-      <div className="text-center py-10 text-xl font-semibold">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-xl font-semibold text-gray-900">Завантаження...</p>
+        </div>
+      </div>
     );
+  }
+
+  if (error || !formData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <p className="text-xl font-semibold text-gray-900 mb-2">Помилка</p>
+          <p className="text-gray-600 mb-6">{error || "Дані не знайдено"}</p>
+          <button
+            onClick={() => router.push("/admin/cars")}
+            className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+          >
+            Повернутися до списку
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">

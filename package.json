@@ -7,13 +7,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "bot": "tsx scripts/telegram-bot.ts",
+    "bot:dev": "tsx watch scripts/telegram-bot.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "@tanstack/react-query": "^5.90.7",
     "dotenv": "^17.2.3",
     "next": "16.0.1",
+    "node-telegram-bot-api": "^0.66.0",
     "prisma": "^6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
@@ -24,6 +27,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/node-telegram-bot-api": "^0.64.12",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

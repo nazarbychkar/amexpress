@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { upload_cars } from "@/lib/cars-db"; // adjust path
+import { upload_cars } from "@/lib/cars-db";
 import { prisma } from "@/lib/db";
-import path from "path";
 import * as XLSX from "xlsx";
 
 export async function POST(request: NextRequest) {
@@ -11,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     if (!file) {
       return NextResponse.json(
-        { message: "No file uploaded" },
+        { message: "Файл не завантажено" },
         { status: 400 }
       );
     }
@@ -22,12 +21,24 @@ export async function POST(request: NextRequest) {
 
     // Process file with your function
     const workbook = XLSX.read(buffer, { type: "buffer" });
-    await upload_cars(workbook, prisma);
+    const stats = await upload_cars(workbook, prisma);
 
-    return NextResponse.json({ message: "Upload complete" });
-  } catch (err) {
+    return NextResponse.json({
+      message: "Імпорт завершено успішно",
+      stats: {
+        created: stats.created,
+        updated: stats.updated,
+        errors: stats.errors,
+        total: stats.total,
+        processed: stats.created + stats.updated,
+      },
+    });
+  } catch (err: any) {
     console.error("Upload error:", err);
 
-    return NextResponse.json({ message: "Upload failed" }, { status: 500 });
+    return NextResponse.json(
+      { message: err.message || "Помилка при завантаженні файлу" },
+      { status: 500 }
+    );
   }
 }

@@ -1,16 +1,28 @@
-import Image from "next/image";
-import Link from "next/link";
 import { prisma } from "@/lib/db";
-import {
-  Key,
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-} from "react";
 import CategorySwiper from "./CategorySwiper";
+import HomeClient from "./HomeClient";
+import Link from "next/link";
+import { stat } from "fs/promises";
+import { existsSync } from "fs";
+import path from "path";
+
+async function getBannerTimestamp() {
+  try {
+    const publicDir = path.join(process.cwd(), "public");
+    const filePath = path.join(publicDir, "sale-banner.png");
+    
+    if (existsSync(filePath)) {
+      const stats = await stat(filePath);
+      return stats.mtime.getTime();
+    }
+  } catch (err) {
+    console.error("Error getting banner timestamp:", err);
+  }
+  return Date.now();
+}
 
 export default async function HomePage() {
+  const bannerTimestamp = await getBannerTimestamp();
   // Fetch all cars
   const allCars = await prisma.car.findMany({
     select: {
@@ -19,7 +31,32 @@ export default async function HomePage() {
       priceUSD: true,
       photo: true,
       category: true,
+      createdAt: true,
+      brand: true,
+      mark: true,
     },
+  });
+
+  // Get unique brands and models
+  const uniqueBrands = Array.from(
+    new Set(allCars.map((car: { brand: string }) => car.brand).filter(Boolean))
+  ).sort() as string[];
+  const modelsByBrand: Record<string, string[]> = {};
+  
+  allCars.forEach((car: { brand: string; mark: string }) => {
+    if (car.brand && car.mark) {
+      if (!modelsByBrand[car.brand]) {
+        modelsByBrand[car.brand] = [];
+      }
+      if (!modelsByBrand[car.brand].includes(car.mark)) {
+        modelsByBrand[car.brand].push(car.mark);
+      }
+    }
+  });
+
+  // Sort models for each brand
+  Object.keys(modelsByBrand).forEach((brand) => {
+    modelsByBrand[brand].sort();
   });
 
   // Shuffle and take 10 random cars
@@ -37,97 +74,32 @@ export default async function HomePage() {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
-      {/* --- Акція / Знижки --- */}
-      <section className="max-w-6xl mx-auto px-4 mb-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
+      {/* --- Hero Banner Section --- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8">
         <Link href="/order" className="block group">
-          <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition duration-500">
-            <Image
-              src="/sale-banner.png"
+          <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500 border-4 border-white">
+            <img
+              src={`/sale-banner.png?v=${bannerTimestamp}`}
               alt="Акція, Знижки"
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-              priority
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
-            {/* Optional overlay with text */}
-            {/* <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <h2 className="text-white text-3xl font-semibold">
-                Акція, Знижки
-              </h2>
-            </div> */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
           </div>
         </Link>
       </section>
 
+      {/* --- Categories Section --- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
       <CategorySwiper />
-
-      {/* --- Всі товари (10 random cars) --- */}
-      <section className="max-w-6xl mx-auto px-4 mb-12">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">Всі авто</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {randomCars.map(
-            (car: {
-              id: Key | null | undefined;
-              photo: any;
-              title: string;
-              priceUSD: string;
-            }) => (
-              <Link
-                href={`/car/${car.id}`}
-                key={car.id}
-                className="bg-white rounded-lg shadow-lg hover:shadow-xl pt-3 pb-6 px-3 flex flex-col items-center transition-transform duration-300 transform hover:scale-105"
-              >
-                <div className="w-full h-36 relative mb-4 rounded-lg overflow-hidden">
-                  <Image
-                    src={car.photo?.split(" ")[0] || "/placeholder.png"}
-                    alt={String(car.title)}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                </div>
-                <p className="text-gray-700 font-semibold text-md text-center">
-                  {car.title}
-                </p>
-                <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
-              </Link>
-            )
-          )}
-        </div>
       </section>
 
-      {/* --- Топ товари --- */}
-      <section className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">Топ авто</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {topCars.map(
-            (car: {
-              id: Key | null | undefined;
-              photo: string;
-              title: string;
-              priceUSD: string;
-            }) => (
-              <Link
-                href={`/car/${car.id}`}
-                key={car.id}
-                className="bg-white rounded-lg shadow-lg hover:shadow-xl pt-3 pb-6 px-3 flex flex-col items-center transition-transform duration-300 transform hover:scale-105"
-              >
-                <div className="w-full h-36 relative mb-4 rounded-lg overflow-hidden">
-                  <Image
-                    src={car.photo?.split(" ")[0] || "/placeholder.png"}
-                    alt={String(car.title)}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                </div>
-                <p className="text-gray-700 font-semibold text-md text-center">
-                  {car.title}
-                </p>
-                <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
-              </Link>
-            )
-          )}
-        </div>
-      </section>
+      <HomeClient
+        randomCars={randomCars}
+        topCars={topCars}
+        brands={uniqueBrands}
+        modelsByBrand={modelsByBrand}
+      />
     </div>
   );
 }

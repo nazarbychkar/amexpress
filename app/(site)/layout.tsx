@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "@/components/shared/Footer";
 import BottomNav from "@/components/shared/BottomNav";
 import Header from "@/components/shared/Header";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Cars Catalog",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <main className="pt-20">{children}</main>
         <BottomNav />
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );

@@ -7,6 +7,15 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
+const CATEGORY_NAMES: Record<string, string> = {
+  sedan: "Седани",
+  hatchback: "Хетчбеки",
+  pickup: "Пікапи",
+  crosovers: "Кросовери",
+  suv: "Позашляховики",
+  main: "Головна",
+};
+
 export default async function CategoryPage({
   params,
   searchParams,
@@ -24,13 +33,5 @@ export default async function CategoryPage({
   const filters = { ...sp };
   delete filters.page;
 
-  return (
-    <section className="p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        Категорія: {category.charAt(0).toUpperCase() + category.slice(1)}
-      </h1>
-
-      <Category category={category} page={page} filters={filters} />
-    </section>
-  );
+  return <Category category={category} page={page} filters={filters} />;
 }

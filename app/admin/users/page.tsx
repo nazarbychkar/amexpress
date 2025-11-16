@@ -35,9 +35,14 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">
-        Таблиця Користувачі
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Користувачі Telegram
+        </h1>
+        <div className="text-sm text-gray-600">
+          Всього: <span className="font-bold text-gray-900">{totalUsers}</span>
+        </div>
+      </div>
 
       <div className="overflow-x-auto border rounded-lg shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
