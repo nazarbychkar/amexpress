@@ -7,18 +7,22 @@ export default function Footer() {
         {/* Контакти */}
         <div>
           <h3 className="text-2xl font-semibold mb-6 text-gradient">Контакти</h3>
-          <p className="text-gray-300">
-            <span className="font-medium">Телефон:</span>
+          <p className="text-white">
+            <span className="font-medium text-gray-300">Телефон:</span>
             <br />
-            +380 ХХ ХХХ ХХ ХХ
+            <a href="tel:+380732683634" className="hover:text-pink-500 transition-colors">
+              +380732683634
+            </a>
           </p>
-          <p className="mt-3 text-gray-300">
-            <span className="font-medium">Email:</span>
+          <p className="mt-3 text-white">
+            <span className="font-medium text-gray-300">Email:</span>
             <br />
-            example@email.com
+            <a href="mailto:americsnexpress965@hmail.com" className="hover:text-pink-500 transition-colors">
+              americsnexpress965@hmail.com
+            </a>
           </p>
-          <p className="mt-3 text-gray-300">
-            <span className="font-medium">Адреса:</span>
+          <p className="mt-3 text-white">
+            <span className="font-medium text-gray-300">Адреса:</span>
             <br />
             Одеса, Фонтанська дор. 6а
           </p>
@@ -28,14 +32,14 @@ export default function Footer() {
         <div>
           <h3 className="text-2xl font-semibold mb-6 text-gradient">Соціальні мережі</h3>
           <div className="flex space-x-6">
-            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
-              Instagram
+            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors flex items-center">
+              <span className="icon-instagram"></span> Instagram
             </Link>
-            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
-              Telegram
+            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors flex items-center">
+              <span className="icon-telegram"></span> Telegram
             </Link>
-            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
-              Facebook
+            <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors flex items-center">
+              <span className="icon-facebook"></span> Facebook
             </Link>
           </div>
         </div>
@@ -45,17 +49,17 @@ export default function Footer() {
           <h3 className="text-2xl font-semibold mb-6 text-gradient">Інформація</h3>
           <ul className="flex flex-wrap gap-5">
             <li>
-              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
+              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors">
                 Оплата
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
+              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors">
                 Доставка
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition">
+              <Link href="#" className="text-lg text-gray-300 hover:text-pink-500 transition-colors">
                 Оферта
               </Link>
             </li>

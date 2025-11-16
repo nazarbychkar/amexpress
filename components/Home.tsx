@@ -8,6 +8,7 @@ import {
   ReactNode,
   ReactPortal,
 } from "react";
+import CategorySwiper from "./CategorySwiper";
 
 export default async function HomePage() {
   // Fetch all cars
@@ -58,11 +59,11 @@ export default async function HomePage() {
         </Link>
       </section>
 
+      <CategorySwiper />
+
       {/* --- Всі товари (10 random cars) --- */}
       <section className="max-w-6xl mx-auto px-4 mb-12">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">
-          Всі товари
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">Всі авто</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {randomCars.map(
             (car: {
@@ -84,7 +85,9 @@ export default async function HomePage() {
                     className="object-cover rounded-lg"
                   />
                 </div>
-                <p className="text-gray-700 font-semibold text-md text-center">{car.title}</p>
+                <p className="text-gray-700 font-semibold text-md text-center">
+                  {car.title}
+                </p>
                 <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )
@@ -94,9 +97,7 @@ export default async function HomePage() {
 
       {/* --- Топ товари --- */}
       <section className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">
-          Топ товари
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">Топ авто</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {topCars.map(
             (car: {
@@ -118,7 +119,9 @@ export default async function HomePage() {
                     className="object-cover rounded-lg"
                   />
                 </div>
-                <p className="text-gray-700 font-semibold text-md text-center">{car.title}</p>
+                <p className="text-gray-700 font-semibold text-md text-center">
+                  {car.title}
+                </p>
                 <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )

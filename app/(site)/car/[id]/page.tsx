@@ -1,6 +1,8 @@
-import ImageCarousel from "@/components/ImageCarousel";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
+import ImageCarousel from "@/components/ImageCarousel";
+import DropdownCar from "@/components/DropdownCar";
+import Order from "@/components/Order";
 
 interface CarPageProps {
   params: Promise<{ id: string }>;
@@ -9,127 +11,99 @@ interface CarPageProps {
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
 
+  // Fetch the main car details
   const car = await prisma.car.findUnique({
     where: { id: parseInt(id) },
   });
 
   if (!car) {
-    return <div className="p-4 text-center text-red-500">Car not found</div>;
+    return <div className="p-4 text-center text-red-500">Авто не знайдено</div>;
   }
 
   // If multiple photos, split by comma
   const photos = car.photo?.split(" ");
 
+  // Fetch two random cars (excluding the current car)
+  const randomCars = await prisma.car.findMany({
+    take: 2,
+    where: {
+      id: { not: car.id }, // Exclude the current car
+    },
+    orderBy: {
+      // This can be adjusted to any random order logic. For simplicity, we just use ID sorting here.
+      id: "desc",
+    },
+  });
+
   return (
-    <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       {/* Image Carousel */}
       {photos.length > 0 && <ImageCarousel photos={photos} title={car.title} />}
 
       {/* Car Info */}
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">{car.title}</h1>
-        <p className="text-lg text-gray-600">{car.description}</p>
-        <p className="mt-2 text-xl text-green-600 font-semibold">
-          ${car.price.toLocaleString()}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">{car.title}</h1>
+        <div
+          className="text-lg text-gray-600 mt-4"
+          dangerouslySetInnerHTML={{
+            __html: `<strong>${car.title}</strong> — ${car.text}`,
+          }}
+        />
+        <p className="mt-4 text-xl text-green-600 font-semibold">
+          {car.priceUSD.toLocaleString()}$
           {car.priceOld && (
             <span className="line-through text-gray-400 ml-2">
-              ${car.priceOld.toLocaleString()}
+              {car.priceOld.toLocaleString()}$
             </span>
           )}
         </p>
       </div>
 
+      {/* Buy Button */}
+      <Order />
+
       {/* Characteristics */}
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
-          Characteristics
-        </h2>
-        <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-          <div>
-            <span className="font-semibold">Brand:</span> {car.brand}
-          </div>
-          <div>
-            <span className="font-semibold">Mark:</span> {car.mark}
-          </div>
-          <div>
-            <span className="font-semibold">Category:</span> {car.category}
-          </div>
-          <div>
-            <span className="font-semibold">SKU:</span> {car.sku}
-          </div>
-          <div>
-            <span className="font-semibold">Engine Type:</span> {car.engineType}
-          </div>
-          <div>
-            <span className="font-semibold">Engine Volume:</span>{" "}
-            {car.engineVolume} L
-          </div>
-          <div>
-            <span className="font-semibold">Transmission:</span>{" "}
-            {car.transmission}
-          </div>
-          <div>
-            <span className="font-semibold">Drive Type:</span> {car.driveType}
-          </div>
-          <div>
-            <span className="font-semibold">Year:</span> {car.year}
-          </div>
-          <div>
-            <span className="font-semibold">Engine Power:</span>{" "}
-            {car.enginePower} HP
-          </div>
-          <div>
-            <span className="font-semibold">Mileage:</span>{" "}
-            {car.mileage.toLocaleString()} km
-          </div>
-          <div>
-            <span className="font-semibold">Weight:</span> {car.weight} kg
-          </div>
-          <div>
-            <span className="font-semibold">Dimensions:</span> {car.length}×
-            {car.width}×{car.height} m
-          </div>
-          <div>
-            <span className="font-semibold">Country:</span>{" "}
-            {car.countryOfOrigin}
-          </div>
-          {car.editions && (
-            <div>
-              <span className="font-semibold">Editions:</span> {car.editions}
-            </div>
-          )}
-          {car.modifications && (
-            <div>
-              <span className="font-semibold">Modifications:</span>{" "}
-              {car.modifications}
-            </div>
-          )}
-          {/* {car.externalId && (
-            <div>
-              <span className="font-semibold">External ID:</span>{" "}
-              {car.externalId}
-            </div>
-          )} */}
-          {/* {car.parentUid && (
-            <div>
-              <span className="font-semibold">Parent UID:</span> {car.parentUid}
-            </div>
-          )} */}
-          <div>
-            <span className="font-semibold">Price USD:</span> $
-            {car.priceUSD.toLocaleString()}
-          </div>
-        </div>
+      <div className="mb-8">
+        <DropdownCar car={car} />
       </div>
 
-      {/* Buy Button */}
-      <div className="flex justify-center">
-        <Link
-          href="/order"
-          className="px-20 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        >
-          Замовити
-        </Link>
+      {/* View Other Cars Section */}
+      <div className="text-center mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Переглянути інші авто
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {randomCars.length > 0 ? (
+            randomCars.map((randomCar: any) => (
+              <div
+                key={randomCar.id}
+                className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+              >
+                <ImageCarousel
+                  photos={randomCar.photo.split(" ")}
+                  title={randomCar.title}
+                />
+                <h3 className="text-lg font-semibold text-gray-800 mt-4">
+                  {randomCar.title}
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  {randomCar.description}
+                </p>
+                <p className="text-xl text-green-600 mt-2">
+                  {randomCar.priceUSD.toLocaleString()}$
+                </p>
+                <Link
+                  href={`/car/${randomCar.id}`}
+                  className="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg text-center hover:bg-blue-700 transition duration-200"
+                >
+                  Переглянути
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500">Завантаження...</div>
+          )}
+        </div>
       </div>
     </div>
   );
