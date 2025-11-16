@@ -55,7 +55,7 @@ export default async function Page({ searchParams }: PageProps) {
                 "ID",
                 "Brand",
                 "Title",
-                "Price",
+                "priceUSD",
                 "Year",
                 "Created At",
                 "Actions",
@@ -142,7 +142,7 @@ export default async function Page({ searchParams }: PageProps) {
                     >
                   | null
                   | undefined;
-                price:
+                priceUSD:
                   | string
                   | number
                   | bigint
@@ -204,7 +204,7 @@ export default async function Page({ searchParams }: PageProps) {
                     {car.title}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-600">
-                    ${car.price}
+                    ${car.priceUSD}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-600">
                     {car.year}

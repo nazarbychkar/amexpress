@@ -1,14 +1,12 @@
-// app/[category]/page.tsx
 import Category from "@/components/Category";
 import { validCategories } from "@/constants/categories";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: { category: string };
-  searchParams: { page?: string };
+  params: Promise<{ category: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-// TODO: make it prerendered (see note below)
 export default async function CategoryPage({
   params,
   searchParams,
@@ -17,10 +15,14 @@ export default async function CategoryPage({
   const sp = await searchParams;
 
   if (!validCategories.includes(category)) {
-    notFound(); // cleaner than rendering manual text
+    notFound();
   }
 
   const page = Math.max(1, parseInt(sp.page || "1", 10));
+
+  // All filters from URL (excluding page)
+  const filters = { ...sp };
+  delete filters.page;
 
   return (
     <section className="p-6">
@@ -28,8 +30,7 @@ export default async function CategoryPage({
         Категорія: {category.charAt(0).toUpperCase() + category.slice(1)}
       </h1>
 
-      {/* Pass both page + category to Category component */}
-      <Category category={category} page={page} />
+      <Category category={category} page={page} filters={filters} />
     </section>
   );
 }

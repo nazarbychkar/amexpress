@@ -1,23 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import {
-  Key,
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-} from "react";
+import CategoryFilters from "./Filter";
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
-export const revalidate = 0; // disable ISR (always fresh)
 const PAGE_SIZE = 12;
 
 interface CategoryProps {
   category: string;
   page: number;
+  filters?: Record<string, string | undefined>;
 }
 
-// Map Ukrainian category names in the DB → internal slugs
 const CATEGORY_MAP: Record<string, string> = {
   Седани: "sedan",
   Позашляховики: "crosovers",
@@ -27,133 +21,121 @@ const CATEGORY_MAP: Record<string, string> = {
   Главная: "main",
 };
 
-export default async function Category({ category, page }: CategoryProps) {
+const REVERSE_CATEGORY_MAP: Record<string, string[]> = Object.entries(
+  CATEGORY_MAP
+).reduce((acc, [ukr, slug]) => {
+  if (!acc[slug]) acc[slug] = [];
+  acc[slug].push(ukr);
+  return acc;
+}, {} as Record<string, string[]>);
+export default async function Category({
+  category,
+  page,
+  filters = {},
+}: CategoryProps) {
   const skip = (page - 1) * PAGE_SIZE;
 
-  // Fetch all cars
-  const allCars = await prisma.car.findMany({
+  // Build "where" filter for Prisma
+  const where: any = {};
+
+  // CATEGORY FILTER USING MAP
+  if (category) {
+    const dbCategories = REVERSE_CATEGORY_MAP[category];
+    if (dbCategories?.length) {
+      where.OR = dbCategories.map((ukr) => ({
+        category: { contains: ukr, mode: "insensitive" },
+      }));
+    }
+  }
+
+  // Handle filters from URL
+  const numericFields = [
+    "price",
+    "priceUSD",
+    "quantity",
+    "year",
+    "mileage",
+    "weight",
+    "engineVolume",
+    "enginePower",
+    "length",
+    "width",
+    "height",
+  ];
+
+  // Destructure filters to remove priceMin and priceMax
+  const { priceMin, priceMax, ...restFilters } = filters;
+
+  // Apply remaining filters (except price) to the "where" clause
+  for (const key in restFilters) {
+    const value = restFilters[key];
+    if (!value) continue;
+
+    if (numericFields.includes(key)) {
+      const num = Number(value);
+      if (!isNaN(num)) where[key] = num;
+      continue;
+    }
+
+    where[key] = { contains: value, mode: "insensitive" };
+  }
+
+  // Price range filter (min and max price)
+  if (priceMin || priceMax) {
+    where.price = {}; // Initialize the price filter
+
+    if (priceMin) where.price.gte = Number(priceMin); // Min price filter (gte)
+    if (priceMax) where.price.lte = Number(priceMax); // Max price filter (lte)
+  }
+
+  // Fetch cars with the filters applied
+  const cars = await prisma.car.findMany({
+    where,
     orderBy: { createdAt: "desc" },
+    skip,
+    take: PAGE_SIZE,
     select: {
       id: true,
       title: true,
-      price: true,
+      priceUSD: true,
       photo: true,
       category: true,
     },
   });
 
-  // Normalize category field from DB (handle "Седани; Хетчбеки" etc.)
-  const normalizeCategory = (raw: string | null) => {
-    if (!raw) return [];
-    return raw
-      .split(/[;\/]+/) // split by ; or /
-      .map((c) => c.trim())
-      .filter(Boolean);
-  };
-
-  // Convert to consistent internal slug for filtering
-  const normalizeToSlug = (raw: string): string[] => {
-    return normalizeCategory(raw)
-      .map((ukr) => CATEGORY_MAP[ukr] || "")
-      .filter(Boolean);
-  };
-
-  // Filter cars by category (if provided)
-  const filteredCars = category
-    ? allCars.filter((car: { category: string }) =>
-        normalizeToSlug(car.category || "").includes(category)
-      )
-    : allCars;
-
-  // Paginate after filtering
-  const totalCars = filteredCars.length;
+  const totalCars = await prisma.car.count({ where });
   const totalPages = Math.ceil(totalCars / PAGE_SIZE);
-  const pagedCars = filteredCars.slice(skip, skip + PAGE_SIZE);
 
   return (
     <div className="py-6">
-      {/* <h1 className="text-2xl font-bold mb-6 text-gray-800">
-        Каталог автомобілів{" "}
-        {category && <span className="text-blue-600">({category})</span>}
-      </h1> */}
+      <CategoryFilters />
 
-      {pagedCars.length === 0 ? (
+      {cars.length === 0 ? (
         <p className="text-gray-600">Немає автомобілів.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {pagedCars.map(
-            (car: {
-              id: Key | null | undefined;
-              photo: any;
-              title:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
-              price:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | ReactPortal
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
-            }) => (
-              <Link
-                key={car.id}
-                className="bg-white shadow rounded-lg overflow-hidden"
-                href={`/car/${car.id}`}
-              >
-                <Image
-                  src={car.photo?.split(" ")[0] || "/placeholder.png"}
-                  alt={String(car.title)}
-                  width={400}
-                  height={200}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-3">
-                  <h3 className="text-sm font-semibold truncate">
-                    {car.title}
-                  </h3>
-                  <p className="text-green-600 font-bold mt-1">
-                    {car.price} грн
-                  </p>
-                </div>
-              </Link>
-            )
-          )}
+          {cars.map((car) => (
+            <Link
+              key={car.id}
+              className="bg-white shadow rounded-lg overflow-hidden"
+              href={`/car/${car.id}`}
+            >
+              <Image
+                src={car.photo?.split(" ")[0] || "/placeholder.png"}
+                alt={String(car.title)}
+                width={400}
+                height={200}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-3">
+                <h3 className="text-sm font-semibold truncate">{car.title}</h3>
+                <p className="text-green-600 font-bold mt-1">{car.priceUSD} $</p>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-6 flex justify-center flex-wrap gap-2">
           {Array.from({ length: totalPages }, (_, i) => (

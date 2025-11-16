@@ -26,7 +26,7 @@ type PrismaConnectorCars = {
         driveType: any;
         year: number;
         enginePower: number;
-        priceUSD: number;
+        priceUSD: string;
         countryOfOrigin: any;
         mileage: number;
         weight: number;
@@ -76,7 +76,7 @@ export async function upload_cars(
           driveType: String(data.driveType) ?? "",
           year: Number(data.year) || 0,
           enginePower: Number(data.enginePower) || 0,
-          priceUSD: Number(data.priceUSD) || 0,
+          priceUSD: String(data.priceUSD) || "",
           countryOfOrigin: String(data.countryOfOrigin) ?? "",
           mileage: Number(data.mileage) || 0,
           weight: Number(data.weight) || 0,

@@ -16,7 +16,7 @@ export default async function HomePage() {
     select: {
       id: true,
       title: true,
-      price: true,
+      priceUSD: true,
       photo: true,
       category: true,
     },
@@ -88,7 +88,7 @@ export default async function HomePage() {
                   >
                 | null
                 | undefined;
-              price:
+              priceUSD:
                 | string
                 | number
                 | bigint
@@ -126,7 +126,7 @@ export default async function HomePage() {
                 <p className="text-gray-700 font-medium text-sm text-center">
                   {car.title}
                 </p>
-                <p className="text-gray-500 text-sm mt-1">{car.price} ₴</p>
+                <p className="text-gray-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )
           )}
@@ -164,7 +164,7 @@ export default async function HomePage() {
                   >
                 | null
                 | undefined;
-              price:
+              priceUSD:
                 | string
                 | number
                 | bigint
@@ -202,7 +202,7 @@ export default async function HomePage() {
                 <p className="text-gray-700 font-medium text-sm text-center">
                   {car.title}
                 </p>
-                <p className="text-gray-500 text-sm mt-1">{car.price} ₴</p>
+                <p className="text-gray-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )
           )}

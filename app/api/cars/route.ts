@@ -18,9 +18,9 @@ export async function GET(request: Promise<Request>) {
     select: {
       id: true,
       title: true,
-      price: true,
       photo: true,
       category: true,
+      priceUSD: true,
     },
   });
 

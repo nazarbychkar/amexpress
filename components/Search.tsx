@@ -9,7 +9,7 @@ interface Car {
   photo: string;
   title: string;
   category: string;
-  price: string | number;
+  priceUSD: string | number;
 }
 
 export default function Search() {
@@ -78,7 +78,7 @@ export default function Search() {
                 </div>
 
                 <div className="text-red-500 font-semibold text-base">
-                  {car.price} ₴
+                  {car.priceUSD} $
                 </div>
               </Link>
             ))

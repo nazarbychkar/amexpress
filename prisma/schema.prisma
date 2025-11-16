@@ -41,7 +41,7 @@ model Car {
   driveType          String  // Привід
   year               Int     // Рік
   enginePower        Float   // Потужність двигуна
-  priceUSD           Float   // Ціна в доларах
+  priceUSD           String   // Ціна в доларах
   countryOfOrigin    String  // Країна виробник
   mileage            Int     // Пробіг
   weight             Float   // Вага
