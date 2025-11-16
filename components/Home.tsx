@@ -1,4 +1,3 @@
-// app/page.js
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
@@ -41,7 +40,7 @@ export default async function HomePage() {
       {/* --- Акція / Знижки --- */}
       <section className="max-w-6xl mx-auto px-4 mb-12">
         <Link href="/order" className="block group">
-          <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden shadow-lg">
+          <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition duration-500">
             <Image
               src="/sale-banner.png"
               alt="Акція, Знижки"
@@ -49,6 +48,7 @@ export default async function HomePage() {
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               priority
             />
+            {/* Optional overlay with text */}
             {/* <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
               <h2 className="text-white text-3xl font-semibold">
                 Акція, Знижки
@@ -60,7 +60,7 @@ export default async function HomePage() {
 
       {/* --- Всі товари (10 random cars) --- */}
       <section className="max-w-6xl mx-auto px-4 mb-12">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">
           Всі товари
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -68,65 +68,24 @@ export default async function HomePage() {
             (car: {
               id: Key | null | undefined;
               photo: any;
-              title:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
-              priceUSD:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | ReactPortal
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
+              title: string;
+              priceUSD: string;
             }) => (
               <Link
                 href={`/car/${car.id}`}
                 key={car.id}
-                className="bg-white rounded-lg shadow hover:shadow-md p-4 flex flex-col items-center"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl pt-3 pb-6 px-3 flex flex-col items-center transition-transform duration-300 transform hover:scale-105"
               >
-                <div className="w-full h-32 relative mb-3">
+                <div className="w-full h-36 relative mb-4 rounded-lg overflow-hidden">
                   <Image
                     src={car.photo?.split(" ")[0] || "/placeholder.png"}
                     alt={String(car.title)}
                     fill
-                    className="object-cover rounded"
+                    className="object-cover rounded-lg"
                   />
                 </div>
-                <p className="text-gray-700 font-medium text-sm text-center">
-                  {car.title}
-                </p>
-                <p className="text-gray-500 text-sm mt-1">{car.priceUSD} $</p>
+                <p className="text-gray-700 font-semibold text-md text-center">{car.title}</p>
+                <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )
           )}
@@ -135,7 +94,7 @@ export default async function HomePage() {
 
       {/* --- Топ товари --- */}
       <section className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">
           Топ товари
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -143,66 +102,24 @@ export default async function HomePage() {
             (car: {
               id: Key | null | undefined;
               photo: string;
-              title:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | ReactPortal
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
-              priceUSD:
-                | string
-                | number
-                | bigint
-                | boolean
-                | ReactElement<unknown, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | ReactPortal
-                | Promise<
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactPortal
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
+              title: string;
+              priceUSD: string;
             }) => (
               <Link
                 href={`/car/${car.id}`}
                 key={car.id}
-                className="bg-white rounded-lg shadow hover:shadow-md p-4 flex flex-col items-center"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl pt-3 pb-6 px-3 flex flex-col items-center transition-transform duration-300 transform hover:scale-105"
               >
-                <div className="w-full h-32 relative mb-3">
+                <div className="w-full h-36 relative mb-4 rounded-lg overflow-hidden">
                   <Image
                     src={car.photo?.split(" ")[0] || "/placeholder.png"}
                     alt={String(car.title)}
                     fill
-                    className="object-cover rounded"
+                    className="object-cover rounded-lg"
                   />
                 </div>
-                <p className="text-gray-700 font-medium text-sm text-center">
-                  {car.title}
-                </p>
-                <p className="text-gray-500 text-sm mt-1">{car.priceUSD} $</p>
+                <p className="text-gray-700 font-semibold text-md text-center">{car.title}</p>
+                <p className="text-green-500 text-sm mt-1">{car.priceUSD} $</p>
               </Link>
             )
           )}

@@ -28,6 +28,7 @@ const REVERSE_CATEGORY_MAP: Record<string, string[]> = Object.entries(
   acc[slug].push(ukr);
   return acc;
 }, {} as Record<string, string[]>);
+
 export default async function Category({
   category,
   page,
@@ -63,7 +64,6 @@ export default async function Category({
     "height",
   ];
 
-  // Destructure filters to remove priceMin and priceMax
   const { priceMin, priceMax, ...restFilters } = filters;
 
   // Apply remaining filters (except price) to the "where" clause
@@ -107,45 +107,48 @@ export default async function Category({
   const totalPages = Math.ceil(totalCars / PAGE_SIZE);
 
   return (
-    <div className="py-6">
+    <div className="py-6 bg-gray-50">
+      {/* Filters */}
       <CategoryFilters />
 
       {cars.length === 0 ? (
-        <p className="text-gray-600">Немає автомобілів.</p>
+        <p className="text-gray-600 text-center font-medium">Немає автомобілів.</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {cars.map((car) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {cars.map((car: { id: Key | null | undefined; photo: string; title: string; priceUSD: string }) => (
             <Link
               key={car.id}
-              className="bg-white shadow rounded-lg overflow-hidden"
+              className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer group overflow-hidden"
               href={`/car/${car.id}`}
             >
-              <Image
-                src={car.photo?.split(" ")[0] || "/placeholder.png"}
-                alt={String(car.title)}
-                width={400}
-                height={200}
-                className="w-full h-40 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="text-sm font-semibold truncate">{car.title}</h3>
-                <p className="text-green-600 font-bold mt-1">{car.priceUSD} $</p>
+              <div className="relative w-full h-48">
+                <Image
+                  src={car.photo?.split(" ")[0] || "/placeholder.png"}
+                  alt={String(car.title)}
+                  layout="fill"
+                  className="object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 flex flex-col space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800 truncate">{car.title}</h3>
+                <p className="text-green-600 font-semibold text-lg">{car.priceUSD} $</p>
               </div>
             </Link>
           ))}
         </div>
       )}
 
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-6 flex justify-center flex-wrap gap-2">
+        <div className="mt-6 flex justify-center flex-wrap gap-4">
           {Array.from({ length: totalPages }, (_, i) => (
             <Link
               key={i + 1}
               href={`/catalog/${category}/?page=${i + 1}`}
-              className={`px-3 py-1 rounded-md border ${
+              className={`px-4 py-2 rounded-lg border text-lg font-semibold transition-all duration-300 ${
                 page === i + 1
                   ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-blue-100 hover:text-blue-600"
               }`}
             >
               {i + 1}
