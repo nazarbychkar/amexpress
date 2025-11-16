@@ -1,10 +1,10 @@
 // app/api/cars/route.ts
 import { prisma } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: Promise<Request>) {
-  const { searchParams } = new URL((await request).url);
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
   const query = searchParams.get("q") || "";
 
   const cars = await prisma.car.findMany({
@@ -27,9 +27,9 @@ export async function GET(request: Promise<Request>) {
   return NextResponse.json(cars);
 }
 
-export async function POST(request: Promise<Request>) {
+export async function POST(request: NextRequest) {
   try {
-    const data = await (await request).json();
+    const data = await request.json();
 
     const car = await prisma.car.create({
       data: {

@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { upload_cars } from "@/lib/cars-db"; // adjust path
 import { prisma } from "@/lib/db";
 import path from "path";
 import * as XLSX from "xlsx";
 
-export async function POST(request: Promise<Request>) {
+export async function POST(request: NextRequest) {
   try {
-    const formData = await (await request).formData();
+    const formData = await request.formData();
     const file = formData.get("file") as File;
 
     if (!file) {

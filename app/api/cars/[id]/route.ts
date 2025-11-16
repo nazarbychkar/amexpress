@@ -30,10 +30,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const carId = Number(params.id);
+    const carId = Number((await params).id);
     const data = await req.json();
 
     const updatedCar = await prisma.car.update({
