@@ -6,6 +6,7 @@ import Image from "next/image";
 interface Category {
   name: string;
   image: string | null;
+  description: string | null;
 }
 
 interface Categories {
@@ -26,8 +27,10 @@ export default function CategoriesAdmin() {
   const [categories, setCategories] = useState<Categories>({});
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<string | null>(null);
+  const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [descriptions, setDescriptions] = useState<Record<string, string>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   useEffect(() => {
@@ -39,6 +42,12 @@ export default function CategoriesAdmin() {
       const res = await fetch("/api/categories");
       const data = await res.json();
       setCategories(data);
+      // Initialize descriptions state
+      const descs: Record<string, string> = {};
+      Object.keys(data).forEach((key) => {
+        descs[key] = data[key].description || "";
+      });
+      setDescriptions(descs);
     } catch (err) {
       console.error("Error fetching categories:", err);
       setError("Помилка при завантаженні категорій");
@@ -101,6 +110,44 @@ export default function CategoriesAdmin() {
     }
   };
 
+  const handleDescriptionChange = (categoryKey: string, value: string) => {
+    setDescriptions((prev) => ({
+      ...prev,
+      [categoryKey]: value,
+    }));
+  };
+
+  const handleSaveDescription = async (categoryKey: string) => {
+    setSaving(categoryKey);
+    setError(null);
+    setSuccess(null);
+
+    const formData = new FormData();
+    formData.append("categoryKey", categoryKey);
+    formData.append("description", descriptions[categoryKey] || "");
+
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setCategories(data.categories);
+        setSuccess(`Опис для ${CATEGORY_NAMES[categoryKey]} успішно збережено!`);
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        setError(data.message || "Помилка при збереженні");
+      }
+    } catch (err: any) {
+      setError("Помилка підключення до сервера");
+    } finally {
+      setSaving(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 p-6 md:p-8 flex items-center justify-center">
@@ -135,7 +182,7 @@ export default function CategoriesAdmin() {
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Управління категоріями
             </h1>
-            <p className="text-gray-600 mt-1">Додайте фото для категорій</p>
+            <p className="text-gray-600 mt-1">Додайте фото та описи для категорій</p>
           </div>
         </div>
       </div>
@@ -244,6 +291,52 @@ export default function CategoriesAdmin() {
                     <span className="text-sm">Завантаження...</span>
                   </div>
                 )}
+
+                {/* Description Section */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Опис категорії:
+                  </label>
+                  <textarea
+                    value={descriptions[categoryKey] || ""}
+                    onChange={(e) => handleDescriptionChange(categoryKey, e.target.value)}
+                    placeholder="Введіть опис категорії (для SEO та інформативності)..."
+                    rows={4}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all resize-none text-sm"
+                  />
+                  <p className="mt-2 text-xs text-gray-500 mb-3">
+                    Опишіть категорію для покращення SEO та інформативності для користувачів
+                  </p>
+                  <button
+                    onClick={() => handleSaveDescription(categoryKey)}
+                    disabled={saving === categoryKey}
+                    className="w-full px-4 py-2 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {saving === categoryKey ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Збереження...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span>Зберегти опис</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           );

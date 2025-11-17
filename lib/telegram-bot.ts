@@ -56,7 +56,55 @@ export async function handleStartCommand(msg: TelegramBot.Message) {
       });
     }
 
-    // Send welcome message with inline button
+    // Check if start command has a parameter (car_id)
+    const commandText = msg.text || "";
+    const carIdMatch = commandText.match(/\/start\s+car_(\d+)/);
+    
+    if (carIdMatch) {
+      // Handle shared car link
+      const carId = parseInt(carIdMatch[1]);
+      
+      // Try to fetch car info
+      try {
+        const car = await prisma.car.findUnique({
+          where: { id: carId },
+          select: {
+            id: true,
+            title: true,
+            photo: true,
+          },
+        });
+
+        if (car) {
+          const shareMessage = `👇🏻 З вами поділились товаром. Натисніть на кнопку для перегляду!`;
+          // Ensure WEB_APP_URL ends with / and construct proper car URL
+          const baseUrl = WEB_APP_URL.endsWith('/') ? WEB_APP_URL.slice(0, -1) : WEB_APP_URL;
+          const carUrl = `${baseUrl}/car/${car.id}`;
+
+          const options: TelegramBot.SendMessageOptions = {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: "🚗 Переглянути авто",
+                    web_app: {
+                      url: carUrl,
+                    } as TelegramBot.WebAppInfo,
+                  },
+                ],
+              ],
+            },
+          };
+
+          await bot.sendMessage(chatId, shareMessage, options);
+          return; // Exit early to prevent default welcome message
+        }
+      } catch (error) {
+        console.error("Error fetching car:", error);
+      }
+    }
+
+    // Default welcome message
     const welcomeText = `👋 Привіт, ${user.first_name}!
 
 Ласкаво просимо до AmeXpress! 🚗

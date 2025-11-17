@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Footer from "@/components/shared/Footer";
 import BottomNav from "@/components/shared/BottomNav";
 import Header from "@/components/shared/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import TelegramWebApp from "@/components/TelegramWebApp";
 
 export const metadata: Metadata = {
   title: "Cars Catalog",
@@ -18,6 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* Telegram Web App SDK */}
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          strategy="beforeInteractive"
+        />
+        <TelegramWebApp />
         <Header />
         <main className="pt-20">{children}</main>
         <BottomNav />

@@ -42,7 +42,7 @@ bot.getMe()
   });
 
 // Handle /start command
-bot.onText(/\/start/, async (msg) => {
+bot.onText(/\/start(?:\s+car_(\d+))?/, async (msg, match) => {
   const chatId = msg.chat.id;
   const user = msg.from;
 
@@ -85,7 +85,54 @@ bot.onText(/\/start/, async (msg) => {
       console.log(`🔄 User updated: ${user.first_name} (${user.id})`);
     }
 
-    // Send welcome message with inline button
+    // Check if start command has a parameter (car_id)
+    const carId = match && match[1] ? parseInt(match[1]) : null;
+
+    if (carId) {
+      // Handle shared car link
+      try {
+        const car = await prisma.car.findUnique({
+          where: { id: carId },
+          select: {
+            id: true,
+            title: true,
+            photo: true,
+          },
+        });
+
+        if (car) {
+          const shareMessage = `👇🏻 З вами поділились товаром. Натисніть на кнопку для перегляду!`;
+          // Ensure WEB_APP_URL ends with / and construct proper car URL
+          const baseUrl = WEB_APP_URL.endsWith('/') ? WEB_APP_URL.slice(0, -1) : WEB_APP_URL;
+          const carUrl = `${baseUrl}/car/${car.id}`;
+
+          const options: TelegramBot.SendMessageOptions = {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: "🚗 Переглянути авто",
+                    web_app: {
+                      url: carUrl,
+                    } as TelegramBot.WebAppInfo,
+                  },
+                ],
+              ],
+            },
+          };
+
+          await bot.sendMessage(chatId, shareMessage, options);
+          console.log(`📤 Sent car share message for car ${car.id} to user ${user.id}`);
+          return; // Exit early to prevent default welcome message
+        } else {
+          console.log(`⚠️ Car with ID ${carId} not found`);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching car:", error);
+      }
+    }
+
+    // Default welcome message (if no car_id or car not found)
     const welcomeText = `👋 Привіт, ${user.first_name}!
 
 Ласкаво просимо до AmeXpress! 🚗
@@ -94,6 +141,10 @@ bot.onText(/\/start/, async (msg) => {
 
 Перегляньте наш каталог та оберіть ідеальний автомобіль для себе!`;
 
+    // Ensure WEB_APP_URL is properly formatted
+    const baseUrl = WEB_APP_URL.endsWith('/') ? WEB_APP_URL.slice(0, -1) : WEB_APP_URL;
+    const catalogUrl = `${baseUrl}/`;
+
     const options: TelegramBot.SendMessageOptions = {
       reply_markup: {
         inline_keyboard: [
@@ -101,7 +152,7 @@ bot.onText(/\/start/, async (msg) => {
             {
               text: "🌐 Відкрити каталог",
               web_app: {
-                url: WEB_APP_URL,
+                url: catalogUrl,
               } as TelegramBot.WebAppInfo,
             },
           ],

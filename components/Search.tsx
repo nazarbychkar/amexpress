@@ -298,38 +298,17 @@ export default function Search() {
                       Очистити
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
                     {recentCars.map((car) => (
-                      <Link
+                      <CarCard
                         key={car.id}
-                        href={`/car/${car.id}`}
-                        className="group bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1 relative"
-                      >
-                        <div className="w-full h-24 sm:h-28 relative overflow-hidden bg-gray-100">
-                          <Image
-                            src={car.photo?.split(" ")[0] || "/placeholder.png"}
-                            alt={car.title}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
-          />
-                        </div>
-                        <div className="p-2">
-                          <h3 className="text-xs font-semibold text-gray-900 mb-1 line-clamp-2 min-h-[2rem]">
-                            {car.title}
-                          </h3>
-                          <p
-                            className={`text-sm font-bold ${
-                              !car.priceUSD ||
-                              car.priceUSD === "0" ||
-                              car.priceUSD === "0.00"
-                                ? "text-gray-500"
-                                : "text-green-600"
-                            }`}
-                          >
-                            {formatPrice(car.priceUSD)}
-                          </p>
-                        </div>
-                      </Link>
+                        car={{
+                          id: car.id,
+                          photo: car.photo || null,
+                          title: car.title,
+                          priceUSD: typeof car.priceUSD === "string" ? car.priceUSD : String(car.priceUSD || "0"),
+                        }}
+                      />
                     ))}
                   </div>
                 </div>
@@ -351,7 +330,7 @@ export default function Search() {
         )}
 
         {/* Results */}
-        <div>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {Array.from({ length: 10 }).map((_, index) => (
@@ -362,7 +341,7 @@ export default function Search() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {cars.map((car) => (
                 <CarCard
-                key={car.id}
+                  key={car.id}
                   car={{
                     id: car.id,
                     photo: car.photo || null,
@@ -431,7 +410,7 @@ export default function Search() {
               </p>
             </div>
           )}
-        </div>
+        </section>
       </div>
 
       {showFilters && (

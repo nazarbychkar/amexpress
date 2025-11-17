@@ -80,8 +80,9 @@ export default async function Category({
     modelsByBrand[brand].sort();
   });
 
-  // Get category image
+  // Get category image and description
   let categoryImage: string | null = null;
+  let categoryDescription: string | null = null;
   try {
     const categoriesFile = path.join(process.cwd(), "data", "categories.json");
     
@@ -89,9 +90,10 @@ export default async function Category({
       const fileContent = await readFile(categoriesFile, "utf-8");
       const categoryData = JSON.parse(fileContent);
       categoryImage = categoryData[category]?.image || null;
+      categoryDescription = categoryData[category]?.description || null;
     }
   } catch (err) {
-    console.error("Error fetching category image:", err);
+    console.error("Error fetching category data:", err);
   }
 
   // Build "where" filter for Prisma
@@ -185,10 +187,10 @@ export default async function Category({
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
       <ScrollToTop />
-      {/* Category Banner */}
-      {categoryImage && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 mb-16">
-          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transform transition-all duration-300 hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.4)]">
+      {/* Category Banner with Description */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 mb-16">
+        {categoryImage && (
+          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transform transition-all duration-300 hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.4)]">
             <img
               src={categoryImage}
               alt={CATEGORY_NAMES[category] || "Категорія"}
@@ -196,9 +198,9 @@ export default async function Category({
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center px-6 transform transition-all duration-500">
-                <div className="relative inline-block">
-                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)] tracking-tight uppercase bg-clip-text animate-fade-in">
+              <div className="text-center px-6 transform transition-all duration-500 w-[90%]">
+                <div className="relative inline-block max-w-full">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)] tracking-tight uppercase bg-clip-text animate-fade-in break-words">
                     {CATEGORY_NAMES[category] || category}
                   </h1>
                   <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 blur-sm"></div>
@@ -212,8 +214,30 @@ export default async function Category({
             <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-white/30 rounded-bl-2xl"></div>
             <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-white/30 rounded-br-2xl"></div>
           </div>
-        </section>
-      )}
+        )}
+
+        {/* Category Description - directly under banner */}
+        {categoryDescription && (
+          <div className={`bg-white ${categoryImage ? 'rounded-b-3xl' : 'rounded-3xl'} shadow-elegant border-t-0 border-x border-b border-gray-200/50 ${categoryImage ? '-mt-1' : ''} p-6 md:p-8`}>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-gray-700 text-base md:text-lg lg:text-xl leading-relaxed text-center font-medium">
+                {categoryDescription}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Fallback: Show category name if no image */}
+        {!categoryImage && (
+          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
+            <div className="text-center px-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight uppercase">
+                {CATEGORY_NAMES[category] || category}
+              </h1>
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* Filters Button */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
@@ -293,9 +317,9 @@ export default async function Category({
                 params.set("page", (page - 1).toString());
                 return `/catalog/${category}?${params.toString()}`;
               })()}
-              className="group px-4 py-3 rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
               </svg>
             </Link>
@@ -315,7 +339,7 @@ export default async function Category({
             };
 
             const getPageClassName = (pageNum: number) => {
-              return `min-w-[48px] px-5 py-3 rounded-2xl border-2 text-base font-bold transition-all duration-300 transform ${
+              return `min-w-[36px] sm:min-w-[48px] px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border-2 text-sm sm:text-base font-bold transition-all duration-300 transform ${
                 page === pageNum
                   ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white border-gray-900 shadow-xl scale-110 ring-2 ring-gray-400 ring-offset-2"
                   : "bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 shadow-lg hover:shadow-xl hover:scale-105 hover:-translate-y-0.5"
@@ -356,7 +380,7 @@ export default async function Category({
             return pages.map((item, idx) => {
               if (item === "...") {
                 return (
-                  <span key={`ellipsis-${idx}`} className="px-4 py-3 text-gray-400 font-black text-xl select-none">
+                  <span key={`ellipsis-${idx}`} className="px-2 sm:px-4 py-2 sm:py-3 text-gray-400 font-black text-base sm:text-xl select-none">
                     •••
                   </span>
                 );
@@ -388,9 +412,9 @@ export default async function Category({
                 params.set("page", (page + 1).toString());
                 return `/catalog/${category}?${params.toString()}`;
               })()}
-              className="group px-4 py-3 rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
               </svg>
             </Link>

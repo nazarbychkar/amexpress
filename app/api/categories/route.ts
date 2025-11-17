@@ -28,7 +28,7 @@ export async function GET() {
       main: "Головна",
     };
 
-    let categories: Record<string, { name: string; image: string | null }> = {};
+    let categories: Record<string, { name: string; image: string | null; description: string | null }> = {};
     
     if (existsSync(CATEGORIES_FILE)) {
       const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
@@ -41,9 +41,15 @@ export async function GET() {
         categories[key] = {
           name: defaultNames[key],
           image: null,
+          description: null,
         };
-      } else if (!categories[key].name) {
-        categories[key].name = defaultNames[key];
+      } else {
+        if (!categories[key].name) {
+          categories[key].name = defaultNames[key];
+        }
+        if (!categories[key].hasOwnProperty("description")) {
+          categories[key].description = null;
+        }
       }
     });
 
@@ -89,7 +95,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Read existing categories
-    let categories: Record<string, { name: string; image: string | null }> = {};
+    let categories: Record<string, { name: string; image: string | null; description: string | null }> = {};
     if (existsSync(CATEGORIES_FILE)) {
       const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
       categories = JSON.parse(fileContent);
@@ -101,9 +107,15 @@ export async function POST(request: NextRequest) {
         categories[key] = {
           name: defaultNames[key],
           image: null,
+          description: null,
         };
-      } else if (!categories[key].name) {
-        categories[key].name = defaultNames[key];
+      } else {
+        if (!categories[key].name) {
+          categories[key].name = defaultNames[key];
+        }
+        if (!categories[key].hasOwnProperty("description")) {
+          categories[key].description = null;
+        }
       }
     });
 
@@ -139,8 +151,15 @@ export async function POST(request: NextRequest) {
         categories[categoryKey] = {
           name: defaultNames[categoryKey] || categoryKey,
           image: `/categories/${fileName}`,
+          description: null,
         };
       }
+    }
+
+    // Handle description update
+    const description = formData.get("description") as string | null;
+    if (description !== null && categories[categoryKey]) {
+      categories[categoryKey].description = description.trim() || null;
     }
 
     // Save updated categories

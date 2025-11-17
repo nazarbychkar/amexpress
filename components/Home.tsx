@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import CategorySwiper from "./CategorySwiper";
 import HomeClient from "./HomeClient";
-import Link from "next/link";
+import Banner from "./Banner";
 import { stat } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
@@ -76,18 +76,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
       {/* --- Hero Banner Section --- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8">
-        <Link href="/order" className="block group">
-          <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500 border-4 border-white">
-            <img
-              src={`/sale-banner.png?v=${bannerTimestamp}`}
-              alt="Акція, Знижки"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-          </div>
-        </Link>
-      </section>
+      <Banner bannerTimestamp={bannerTimestamp} />
 
       {/* --- Categories Section --- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">

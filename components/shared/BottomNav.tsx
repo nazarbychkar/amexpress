@@ -1,19 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [favoritesCount, setFavoritesCount] = useState(0);
+
+  useEffect(() => {
+    const updateFavoritesCount = () => {
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("favorites");
+        const favorites = stored ? JSON.parse(stored) : [];
+        setFavoritesCount(favorites.length);
+      }
+    };
+
+    updateFavoritesCount();
+
+    // Listen for storage changes (when favorites are updated)
+    window.addEventListener("storage", updateFavoritesCount);
+    
+    // Custom event for same-tab updates
+    window.addEventListener("favoritesUpdated", updateFavoritesCount);
+
+    return () => {
+      window.removeEventListener("storage", updateFavoritesCount);
+      window.removeEventListener("favoritesUpdated", updateFavoritesCount);
+    };
+  }, []);
 
   const getLinkClass = (path: string) => {
     return pathname === path
-      ? "flex flex-col items-center text-sm text-white font-semibold transition-transform transform hover:scale-110"
-      : "flex flex-col items-center text-sm text-gray-400 hover:text-gray-300 transition-transform transform hover:scale-110";
+      ? "flex flex-col items-center text-sm text-white font-semibold transition-transform transform hover:scale-110 relative"
+      : "flex flex-col items-center text-sm text-gray-400 hover:text-gray-300 transition-transform transform hover:scale-110 relative";
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-gradient-to-t from-gray-900 to-black text-white z-50 border-t border-gray-900 shadow-lg rounded-t-3xl">
+    <nav className="fixed bottom-0 left-0 w-full gradient-dark-elegant text-white z-50 border-t border-gray-800/50 shadow-luxury rounded-t-3xl backdrop-blur-xl">
       <div className="max-w-md mx-auto flex justify-around items-center py-3">
         <Link href="/" className={getLinkClass("/")}>
           <svg
@@ -67,19 +92,26 @@ export default function BottomNav() {
         </Link>
 
         <Link href="/favorites" className={getLinkClass("/favorites")}>
-          <svg
-            className="w-7 h-7 mb-1 transition-all"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
+          <div className="relative">
+            <svg
+              className="w-7 h-7 mb-1 transition-all"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+            {favoritesCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full border-2 border-gray-900 animate-pulse-glow">
+                {favoritesCount > 99 ? "99+" : favoritesCount}
+              </span>
+            )}
+          </div>
           <span>Обране</span>
         </Link>
       </div>
