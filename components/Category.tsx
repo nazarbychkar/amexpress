@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import CategoryClient from "./CategoryClient";
 import CarCard from "./CarCard";
 import ScrollToTop from "./ScrollToTop";
+import Pagination from "./Pagination";
 import { readFile } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
@@ -301,127 +302,12 @@ export default async function Category({
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-          <div className="flex justify-center items-center flex-wrap gap-3">
-          {/* Previous button */}
-          {page > 1 && (
-            <Link
-              href={(() => {
-                const params = new URLSearchParams();
-                Object.entries(filters).forEach(([key, value]) => {
-                  if (value && key !== "page") {
-                    params.set(key, value);
-                  }
-                });
-                params.set("page", (page - 1).toString());
-                return `/catalog/${category}?${params.toString()}`;
-              })()}
-              className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-              </svg>
-            </Link>
-          )}
-
-          {/* Helper function to create page link */}
-          {(() => {
-            const createPageLink = (pageNum: number) => {
-              const params = new URLSearchParams();
-              Object.entries(filters).forEach(([key, value]) => {
-                if (value && key !== "page") {
-                  params.set(key, value);
-                }
-              });
-              params.set("page", pageNum.toString());
-              return `/catalog/${category}?${params.toString()}`;
-            };
-
-            const getPageClassName = (pageNum: number) => {
-              return `min-w-[36px] sm:min-w-[48px] px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border-2 text-sm sm:text-base font-bold transition-all duration-300 transform ${
-                page === pageNum
-                  ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white border-gray-900 shadow-xl scale-110 ring-2 ring-gray-400 ring-offset-2"
-                  : "bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 shadow-lg hover:shadow-xl hover:scale-105 hover:-translate-y-0.5"
-              }`;
-            };
-
-            const pages: (number | string)[] = [];
-
-            // Always show first 3 pages
-            for (let i = 1; i <= Math.min(3, totalPages); i++) {
-              pages.push(i);
-            }
-
-            // If there are more than 3 pages, show ellipsis and handle current/last page
-            if (totalPages > 3) {
-              // Show current page if it's not in the first 3 and not the last page
-              if (page > 3 && page < totalPages) {
-                if (page > 4) {
-                  pages.push("...");
-                }
-                // Only add current page if it's not already in the array
-                if (!pages.includes(page)) {
-                  pages.push(page);
-                }
-              }
-
-              // Show last page if it's not already shown
-              if (totalPages > 3 && !pages.includes(totalPages)) {
-                if (page < totalPages - 2 && !pages.includes("...")) {
-                  pages.push("...");
-                } else if (page === totalPages - 2 && !pages.includes("...")) {
-                  pages.push("...");
-                }
-                pages.push(totalPages);
-              }
-            }
-
-            return pages.map((item, idx) => {
-              if (item === "...") {
-                return (
-                  <span key={`ellipsis-${idx}`} className="px-2 sm:px-4 py-2 sm:py-3 text-gray-400 font-black text-base sm:text-xl select-none">
-                    •••
-                  </span>
-                );
-              }
-
-              const pageNum = item as number;
-              return (
-                <Link
-                  key={pageNum}
-                  href={createPageLink(pageNum)}
-                  className={getPageClassName(pageNum)}
-                >
-                  {pageNum}
-                </Link>
-              );
-            });
-          })()}
-
-          {/* Next button */}
-          {page < totalPages && (
-            <Link
-              href={(() => {
-                const params = new URLSearchParams();
-                Object.entries(filters).forEach(([key, value]) => {
-                  if (value && key !== "page") {
-                    params.set(key, value);
-                  }
-                });
-                params.set("page", (page + 1).toString());
-                return `/catalog/${category}?${params.toString()}`;
-              })()}
-              className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          )}
-        </div>
-        </section>
-      )}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        baseUrl={`/catalog/${category}`}
+        filters={filters}
+      />
     </div>
   );
 }
