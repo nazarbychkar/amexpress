@@ -15,8 +15,21 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
 
+    // Convert telegramId and chatId to BigInt if they are strings or numbers
+    const processedData = {
+      ...data,
+      telegramId: typeof data.telegramId === 'string' || typeof data.telegramId === 'number' 
+        ? BigInt(data.telegramId) 
+        : data.telegramId,
+      chatId: data.chatId 
+        ? (typeof data.chatId === 'string' || typeof data.chatId === 'number' 
+          ? BigInt(data.chatId) 
+          : data.chatId)
+        : null,
+    };
+
     const newUser = await prisma.user.create({
-      data: data, // Обов’язково має включати хоча б telegramId, firstName, languageCode, isBot
+      data: processedData, // Обов'язково має включати хоча б telegramId, firstName, languageCode, isBot
     });
 
     return NextResponse.json(newUser);

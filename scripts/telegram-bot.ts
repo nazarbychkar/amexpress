@@ -49,9 +49,13 @@ bot.onText(/\/start(?:\s+car_(\d+))?/, async (msg, match) => {
   if (!user) return;
 
   try {
+    // Convert Telegram IDs to BigInt
+    const telegramIdBigInt = BigInt(user.id);
+    const chatIdBigInt = BigInt(chatId);
+
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { telegramId: user.id },
+      where: { telegramId: telegramIdBigInt },
     });
 
     const isNewUser = !existingUser;
@@ -60,12 +64,12 @@ bot.onText(/\/start(?:\s+car_(\d+))?/, async (msg, match) => {
     if (!existingUser) {
       await prisma.user.create({
         data: {
-          telegramId: user.id,
+          telegramId: telegramIdBigInt,
           username: user.username || null,
           firstName: user.first_name,
           lastName: user.last_name || null,
           languageCode: user.language_code || "uk",
-          chatId: chatId,
+          chatId: chatIdBigInt,
           isBot: user.is_bot || false,
         },
       });
@@ -73,13 +77,13 @@ bot.onText(/\/start(?:\s+car_(\d+))?/, async (msg, match) => {
     } else {
       // Update existing user info
       await prisma.user.update({
-        where: { telegramId: user.id },
+        where: { telegramId: telegramIdBigInt },
         data: {
           username: user.username || null,
           firstName: user.first_name,
           lastName: user.last_name || null,
           languageCode: user.language_code || "uk",
-          chatId: chatId,
+          chatId: chatIdBigInt,
         },
       });
       console.log(`🔄 User updated: ${user.first_name} (${user.id})`);

@@ -55,12 +55,12 @@ model Car {
 
 model User {
   id            Int      @id @default(autoincrement())  // Унікальний ідентифікатор
-  telegramId    Int      @unique                     // Telegram ID (унікальний)
+  telegramId    BigInt   @unique                     // Telegram ID (унікальний)
   username      String?  // Username в Telegram
-  firstName     String   // Перше ім’я
+  firstName     String   // Перше ім'я
   lastName      String?  // Прізвище (може бути null)
   languageCode  String   // Мова
-  chatId        Int?     // ID чату (може бути null)
+  chatId        BigInt?  // ID чату (може бути null)
   isBot         Boolean  // Чи є бот
 
   createdAt     DateTime @default(now()) // Дата створення
