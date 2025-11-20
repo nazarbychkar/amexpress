@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "postinstall": "prisma generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
