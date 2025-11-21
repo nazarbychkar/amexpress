@@ -173,19 +173,32 @@ export async function POST(request: NextRequest) {
         
         console.log("[POST /api/categories] Writing file to:", filePath);
         await writeFile(filePath, buffer);
-        console.log("[POST /api/categories] File saved successfully");
-
+        
+        // Verify file was saved
+        if (!existsSync(filePath)) {
+          throw new Error(`File was not saved to ${filePath}`);
+        }
+        
+        const fileStats = await import("fs/promises").then(m => m.stat(filePath));
+        console.log("[POST /api/categories] File saved successfully. Size:", fileStats.size, "bytes");
+        
         // Update category image (category should already exist from initialization above)
+        // Use API endpoint for better compatibility in production - it reads files dynamically
+        const imagePath = `/api/categories/image/${fileName}`;
+        console.log("[POST /api/categories] File will be accessible at:", imagePath);
+        
         if (categories[categoryKey]) {
-          categories[categoryKey].image = `/categories/${fileName}`;
+          categories[categoryKey].image = imagePath;
         } else {
           // Fallback: create category if somehow it doesn't exist
           categories[categoryKey] = {
             name: defaultNames[categoryKey] || categoryKey,
-            image: `/categories/${fileName}`,
+            image: imagePath,
             description: null,
           };
         }
+        
+        console.log("[POST /api/categories] Category image path set to:", imagePath);
       } catch (fileError: any) {
         console.error("[POST /api/categories] Error saving file:", fileError);
         return NextResponse.json(
