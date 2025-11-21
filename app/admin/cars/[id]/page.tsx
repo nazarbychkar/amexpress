@@ -119,39 +119,44 @@ export default function EditCarPage() {
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {Object.keys(formData).map((key) => (
-          <div key={key} className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700 capitalize">
-              {key.replace(/([A-Z])/g, " $1")}
-            </label>
+        {Object.keys(formData)
+          .filter((key) => {
+            // Exclude technical fields and price (use priceUSD instead)
+            return !["id", "createdAt", "updatedAt", "price"].includes(key);
+          })
+          .map((key) => (
+            <div key={key} className="flex flex-col">
+              <label className="mb-1 font-semibold text-gray-700 capitalize">
+                {key.replace(/([A-Z])/g, " $1")}
+              </label>
 
-            {key === "description" || key === "text" ? (
-              <textarea
-                name={key}
-                value={formData[key]}
-                onChange={handleChange}
-                rows={3}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            ) : (
-              <>
-                {key === "photo" && (
-                  <span className="text-xs text-gray-400">
-                    декілька фото-посиланнь додавайте через пробіл
-                  </span>
-                )}
-
-                <input
-                  type="text"
+              {key === "description" || key === "text" ? (
+                <textarea
                   name={key}
-                  value={formData[key] ?? ""}
+                  value={formData[key]}
                   onChange={handleChange}
+                  rows={3}
                   className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
-              </>
-            )}
-          </div>
-        ))}
+              ) : (
+                <>
+                  {key === "photo" && (
+                    <span className="text-xs text-gray-400">
+                      декілька фото-посиланнь додавайте через пробіл
+                    </span>
+                  )}
+
+                  <input
+                    type="text"
+                    name={key}
+                    value={formData[key] ?? ""}
+                    onChange={handleChange}
+                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </>
+              )}
+            </div>
+          ))}
 
         <button
           type="submit"

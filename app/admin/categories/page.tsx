@@ -89,9 +89,21 @@ export default function CategoriesAdmin() {
         body: formData,
       });
 
+      if (!res.ok) {
+        let errorMessage = "Помилка при завантаженні";
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (parseError) {
+          errorMessage = `Помилка сервера: ${res.status} ${res.statusText}`;
+        }
+        setError(errorMessage);
+        return;
+      }
+
       const data = await res.json();
 
-      if (res.ok) {
+      if (data.categories) {
         setCategories(data.categories);
         setSuccess(`Фото для ${CATEGORY_NAMES[categoryKey]} успішно завантажено!`);
         setTimeout(() => setSuccess(null), 3000);
@@ -101,10 +113,11 @@ export default function CategoriesAdmin() {
           fileInputRefs.current[categoryKey]!.value = "";
         }
       } else {
-        setError(data.message || "Помилка при завантаженні");
+        setError("Неочікувана відповідь від сервера");
       }
     } catch (err: any) {
-      setError("Помилка підключення до сервера");
+      console.error("Error uploading file:", err);
+      setError(err.message || "Помилка підключення до сервера. Перевірте консоль для деталей.");
     } finally {
       setUploading(null);
     }
