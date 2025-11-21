@@ -1,17 +1,72 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile } from "fs/promises";
+import { existsSync } from "fs";
+import path from "path";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const SETTINGS_FILE = path.join(process.cwd(), "data", "settings.json");
+
+// Get Telegram Chat ID from settings or env
+async function getTelegramChatId(): Promise<string | null> {
+  try {
+    // Try to read from settings file first
+    if (existsSync(SETTINGS_FILE)) {
+      console.log("[getTelegramChatId] Reading from settings file:", SETTINGS_FILE);
+      const fileContent = await readFile(SETTINGS_FILE, "utf-8");
+      const settings = JSON.parse(fileContent);
+      console.log("[getTelegramChatId] Settings from file:", settings);
+      
+      if (settings.telegramChatId && settings.telegramChatId.trim() !== "") {
+        console.log("[getTelegramChatId] Using Chat ID from settings:", settings.telegramChatId);
+        return settings.telegramChatId.trim();
+      } else {
+        console.log("[getTelegramChatId] Chat ID not found in settings file or is empty");
+      }
+    } else {
+      console.log("[getTelegramChatId] Settings file does not exist:", SETTINGS_FILE);
+    }
+    
+    // Fallback to env variable
+    const envChatId = process.env.TELEGRAM_CHAT_ID;
+    if (envChatId) {
+      console.log("[getTelegramChatId] Using Chat ID from env variable");
+      return envChatId;
+    }
+    
+    console.log("[getTelegramChatId] Chat ID not found in settings or env");
+    return null;
+  } catch (error: any) {
+    console.error("[getTelegramChatId] Error reading settings:", error);
+    console.error("[getTelegramChatId] Error stack:", error.stack);
+    // Fallback to env variable
+    const envChatId = process.env.TELEGRAM_CHAT_ID;
+    if (envChatId) {
+      console.log("[getTelegramChatId] Using Chat ID from env variable (fallback)");
+      return envChatId;
+    }
+    return null;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { name, phone, message, carInfo, formType } = body;
 
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-      console.error("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not set");
+    const TELEGRAM_CHAT_ID = await getTelegramChatId();
+
+    if (!TELEGRAM_BOT_TOKEN) {
+      console.error("TELEGRAM_BOT_TOKEN is not set in environment variables");
       return NextResponse.json(
-        { error: "Telegram configuration is missing" },
+        { error: "Telegram bot token is not configured. Please set TELEGRAM_BOT_TOKEN in .env file." },
+        { status: 500 }
+      );
+    }
+
+    if (!TELEGRAM_CHAT_ID) {
+      console.error("TELEGRAM_CHAT_ID is not set. Check settings or .env file.");
+      return NextResponse.json(
+        { error: "Telegram chat ID is not configured. Please set it in admin settings or TELEGRAM_CHAT_ID in .env file." },
         { status: 500 }
       );
     }
