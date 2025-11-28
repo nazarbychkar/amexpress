@@ -70,7 +70,7 @@ export default function Catalog() {
                 <Link
                   key={categoryKey}
                   href={`/catalog/${categorySlug}`}
-                  className="block group relative w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02]"
+                  className="block group relative w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-[1.02]"
                 >
                   {/* Image Container */}
                   <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
@@ -82,13 +82,7 @@ export default function Catalog() {
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-700"
                           loading="lazy"
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                         />
-                        {/* Dark Gradient Overlay for better text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
-                        {/* Hover gradient effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       </>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100"></div>
@@ -97,8 +91,8 @@ export default function Catalog() {
 
                   {/* Enhanced Text Overlay */}
                   <div className="absolute inset-0 flex items-center justify-start px-8 sm:px-12 md:px-16">
-                    <div className="relative z-10">
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] tracking-tight mb-2 transform group-hover:translate-x-2 transition-transform duration-300">
+                    <div className="relative z-10 bg-black/40 px-6 py-4 rounded-xl">
+                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-2 transform group-hover:translate-x-2 transition-transform duration-300">
                         {category.name}
                       </h2>
                       <div className="w-16 h-1 bg-white/90 rounded-full transform group-hover:translate-x-2 transition-transform duration-300"></div>

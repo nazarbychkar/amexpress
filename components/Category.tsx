@@ -191,7 +191,7 @@ export default async function Category({
       {/* Category Banner with Description */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 mb-16">
         {categoryImage && (
-          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transform transition-all duration-300 hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.4)]">
+          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden transform transition-all duration-300">
             <img
               src={categoryImage}
               alt={CATEGORY_NAMES[category] || "Категорія"}
@@ -230,7 +230,7 @@ export default async function Category({
 
         {/* Fallback: Show category name if no image */}
         {!categoryImage && (
-          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
+          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
             <div className="text-center px-6">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight uppercase">
                 {CATEGORY_NAMES[category] || category}
