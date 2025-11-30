@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir, readFile } from "fs/promises";
+import { writeFile, mkdir, readFile, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -17,51 +17,35 @@ async function ensureDataDir() {
   }
 }
 
+// Helper function to load categories
+async function loadCategories() {
+  await ensureDataDir();
+  let categories: Record<string, { name: string; image: string | null; description: string | null; slug: string; priority: number }> = {};
+  
+  if (existsSync(CATEGORIES_FILE)) {
+    const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
+    const loaded = JSON.parse(fileContent);
+    // Migrate old categories to include priority
+    Object.keys(loaded).forEach((key) => {
+      categories[key] = {
+        ...loaded[key],
+        priority: loaded[key].priority !== undefined ? loaded[key].priority : 999,
+      };
+    });
+  }
+  
+  return categories;
+}
+
+// Helper function to save categories
+async function saveCategories(categories: Record<string, { name: string; image: string | null; description: string | null; slug: string; priority: number }>) {
+  await writeFile(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
+}
+
 // Get categories
 export async function GET() {
   try {
-    await ensureDataDir();
-    
-    // Default category names
-    const defaultNames: Record<string, string> = {
-      sedan: "Седани",
-      hatchback: "Хетчбеки",
-      pickup: "Пікапи",
-      crosovers: "Кросовери",
-      suv: "Позашляховики",
-      main: "Головна",
-    };
-
-    let categories: Record<string, { name: string; image: string | null; description: string | null }> = {};
-    
-    if (existsSync(CATEGORIES_FILE)) {
-      const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
-      categories = JSON.parse(fileContent);
-    }
-
-    // Ensure all default categories exist
-    Object.keys(defaultNames).forEach((key) => {
-      if (!categories[key]) {
-        categories[key] = {
-          name: defaultNames[key],
-          image: null,
-          description: null,
-        };
-      } else {
-        if (!categories[key].name) {
-          categories[key].name = defaultNames[key];
-        }
-        if (!categories[key].hasOwnProperty("description")) {
-          categories[key].description = null;
-        }
-      }
-    });
-
-    // Save updated categories if any were added
-    if (Object.keys(categories).length > 0) {
-      await writeFile(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
-    }
-
+    const categories = await loadCategories();
     return NextResponse.json(categories);
   } catch (err: any) {
     console.error("Error reading categories:", err);
@@ -72,171 +56,234 @@ export async function GET() {
   }
 }
 
-// Update category image
+// Create or update category
 export async function POST(request: NextRequest) {
-  console.log("[POST /api/categories] Request received");
   try {
-    console.log("[POST /api/categories] Ensuring data directory");
     await ensureDataDir();
-    
-    console.log("[POST /api/categories] Parsing form data");
     const formData = await request.formData();
-    console.log("[POST /api/categories] Form data parsed successfully");
+    const action = formData.get("action") as string;
     
+    // DELETE action
+    if (action === "delete") {
+      const categoryKey = formData.get("categoryKey") as string;
+      if (!categoryKey) {
+        return NextResponse.json(
+          { message: "Категорія не вказана" },
+          { status: 400 }
+        );
+      }
+      
+      const categories = await loadCategories();
+      
+      if (!categories[categoryKey]) {
+        return NextResponse.json(
+          { message: "Категорія не знайдена" },
+          { status: 404 }
+        );
+      }
+      
+      // Delete image file if exists
+      if (categories[categoryKey].image) {
+        try {
+          const imagePath = categories[categoryKey].image;
+          if (imagePath.startsWith("/api/categories/image/")) {
+            const fileName = imagePath.replace("/api/categories/image/", "");
+            const filePath = path.join(process.cwd(), "public", "categories", fileName);
+            if (existsSync(filePath)) {
+              await unlink(filePath);
+            }
+          }
+        } catch (err) {
+          console.error("Error deleting image file:", err);
+        }
+      }
+      
+      delete categories[categoryKey];
+      await saveCategories(categories);
+      
+      return NextResponse.json({
+        message: "Категорію успішно видалено",
+        categories,
+      });
+    }
+    
+    // CREATE action
+    if (action === "create") {
+      const name = formData.get("name") as string;
+      const slug = formData.get("slug") as string;
+      const description = formData.get("description") as string | null;
+      
+      if (!name || !slug) {
+        return NextResponse.json(
+          { message: "Назва та slug обов'язкові" },
+          { status: 400 }
+        );
+      }
+      
+      const categories = await loadCategories();
+      
+      // Check if slug already exists
+      if (categories[slug]) {
+        return NextResponse.json(
+          { message: "Категорія з таким slug вже існує" },
+          { status: 400 }
+        );
+      }
+      
+      // Get max priority to set new category at the end
+      const maxPriority = Math.max(...Object.values(categories).map(c => c.priority || 0), 0);
+      
+      const priority = formData.get("priority") as string | null;
+      const priorityNum = priority ? parseInt(priority, 10) : maxPriority + 1;
+      
+      categories[slug] = {
+        name: name.trim(),
+        slug: slug.trim().toLowerCase(),
+        image: null,
+        description: description ? description.trim() : null,
+        priority: !isNaN(priorityNum) ? priorityNum : maxPriority + 1,
+      };
+      
+      await saveCategories(categories);
+      
+      return NextResponse.json({
+        message: "Категорію успішно створено",
+        categories,
+      });
+    }
+    
+    // UPDATE action (default)
     const categoryKey = formData.get("categoryKey") as string;
-    const file = formData.get("image") as File | null;
-    
-    console.log("[POST /api/categories] Category key:", categoryKey);
-    console.log("[POST /api/categories] File:", file ? `Present (${file.size} bytes, ${file.type})` : "Not provided");
-
     if (!categoryKey) {
-      console.error("[POST /api/categories] Category key is missing");
       return NextResponse.json(
         { message: "Категорія не вказана" },
         { status: 400 }
       );
     }
-
-    // Default category names
-    const defaultNames: Record<string, string> = {
-      sedan: "Седани",
-      hatchback: "Хетчбеки",
-      pickup: "Пікапи",
-      crosovers: "Кросовери",
-      suv: "Позашляховики",
-      main: "Головна",
-    };
-
-    // Read existing categories
-    let categories: Record<string, { name: string; image: string | null; description: string | null }> = {};
-    if (existsSync(CATEGORIES_FILE)) {
-      const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
-      categories = JSON.parse(fileContent);
+    
+    const categories = await loadCategories();
+    
+    // If category doesn't exist, create it
+    if (!categories[categoryKey]) {
+      const maxPriority = Math.max(...Object.values(categories).map(c => c.priority || 0), 0);
+      categories[categoryKey] = {
+        name: categoryKey,
+        slug: categoryKey,
+        image: null,
+        description: null,
+        priority: maxPriority + 1,
+      };
     }
-
-    // Ensure all default categories exist
-    Object.keys(defaultNames).forEach((key) => {
-      if (!categories[key]) {
-        categories[key] = {
-          name: defaultNames[key],
-          image: null,
-          description: null,
-        };
-      } else {
-        if (!categories[key].name) {
-          categories[key].name = defaultNames[key];
-        }
-        if (!categories[key].hasOwnProperty("description")) {
-          categories[key].description = null;
-        }
+    
+    // Update name if provided
+    const name = formData.get("name") as string | null;
+    if (name !== null) {
+      categories[categoryKey].name = name.trim();
+    }
+    
+    // Update priority if provided
+    const priority = formData.get("priority") as string | null;
+    if (priority !== null) {
+      const priorityNum = parseInt(priority, 10);
+      if (!isNaN(priorityNum)) {
+        categories[categoryKey].priority = priorityNum;
       }
-    });
-
+    }
+    
+    // Update slug if provided
+    const newSlug = formData.get("slug") as string | null;
+    if (newSlug !== null && newSlug !== categoryKey) {
+      const trimmedSlug = newSlug.trim().toLowerCase();
+      if (categories[trimmedSlug] && trimmedSlug !== categoryKey) {
+        return NextResponse.json(
+          { message: "Категорія з таким slug вже існує" },
+          { status: 400 }
+        );
+      }
+      categories[trimmedSlug] = { ...categories[categoryKey], slug: trimmedSlug };
+      if (trimmedSlug !== categoryKey) {
+        delete categories[categoryKey];
+      }
+    }
+    
+    // Handle image upload
+    const file = formData.get("image") as File | null;
     if (file && file.size > 0) {
-      console.log("[POST /api/categories] Processing file upload");
-      
-      // Validate file type
       if (!file.type.startsWith("image/")) {
-        console.error("[POST /api/categories] Invalid file type:", file.type);
         return NextResponse.json(
           { message: "Файл повинен бути зображенням" },
           { status: 400 }
         );
       }
-
-      // Validate file size (max 10MB)
+      
       const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
-        console.error("[POST /api/categories] File too large:", file.size);
         return NextResponse.json(
           { message: "Розмір файлу не повинен перевищувати 10MB" },
           { status: 400 }
         );
       }
-
+      
       try {
-        console.log("[POST /api/categories] Ensuring public/categories directory");
-        // Ensure public/categories directory exists
         const publicDir = path.join(process.cwd(), "public", "categories");
         if (!existsSync(publicDir)) {
-          console.log("[POST /api/categories] Creating directory:", publicDir);
           await mkdir(publicDir, { recursive: true });
         }
-
-        console.log("[POST /api/categories] Reading file bytes");
-        // Save file
+        
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
         const fileExtension = file.name.split(".").pop() || "png";
-        const fileName = `${categoryKey}.${fileExtension}`;
+        const finalSlug = newSlug ? newSlug.trim().toLowerCase() : categoryKey;
+        const fileName = `${finalSlug}.${fileExtension}`;
         const filePath = path.join(publicDir, fileName);
         
-        console.log("[POST /api/categories] Writing file to:", filePath);
+        // Delete old image if exists
+        if (categories[categoryKey]?.image) {
+          try {
+            const oldImagePath = categories[categoryKey].image;
+            if (oldImagePath.startsWith("/api/categories/image/")) {
+              const oldFileName = oldImagePath.replace("/api/categories/image/", "");
+              const oldFilePath = path.join(process.cwd(), "public", "categories", oldFileName);
+              if (existsSync(oldFilePath) && oldFileName !== fileName) {
+                await unlink(oldFilePath);
+              }
+            }
+          } catch (err) {
+            console.error("Error deleting old image:", err);
+          }
+        }
+        
         await writeFile(filePath, buffer);
-        
-        // Verify file was saved
-        if (!existsSync(filePath)) {
-          throw new Error(`File was not saved to ${filePath}`);
-        }
-        
-        const fileStats = await import("fs/promises").then(m => m.stat(filePath));
-        console.log("[POST /api/categories] File saved successfully. Size:", fileStats.size, "bytes");
-        
-        // Update category image (category should already exist from initialization above)
-        // Use API endpoint for better compatibility in production - it reads files dynamically
         const imagePath = `/api/categories/image/${fileName}`;
-        console.log("[POST /api/categories] File will be accessible at:", imagePath);
-        
-        if (categories[categoryKey]) {
-          categories[categoryKey].image = imagePath;
-        } else {
-          // Fallback: create category if somehow it doesn't exist
-          categories[categoryKey] = {
-            name: defaultNames[categoryKey] || categoryKey,
-            image: imagePath,
-            description: null,
-          };
+        const finalKey = newSlug ? newSlug.trim().toLowerCase() : categoryKey;
+        if (categories[finalKey]) {
+          categories[finalKey].image = imagePath;
         }
-        
-        console.log("[POST /api/categories] Category image path set to:", imagePath);
       } catch (fileError: any) {
-        console.error("[POST /api/categories] Error saving file:", fileError);
         return NextResponse.json(
           { message: `Помилка збереження файлу: ${fileError.message}` },
           { status: 500 }
         );
       }
-    } else {
-      console.log("[POST /api/categories] No file provided or file is empty");
     }
-
+    
     // Handle description update
     const description = formData.get("description") as string | null;
-    if (description !== null && categories[categoryKey]) {
-      categories[categoryKey].description = description.trim() || null;
+    if (description !== null) {
+      const finalKey = newSlug ? newSlug.trim().toLowerCase() : categoryKey;
+      if (categories[finalKey]) {
+        categories[finalKey].description = description.trim() || null;
+      }
     }
-
-    // Save updated categories
-    try {
-      console.log("[POST /api/categories] Saving categories to file");
-      await writeFile(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
-      console.log("[POST /api/categories] Categories saved successfully");
-    } catch (writeError: any) {
-      console.error("[POST /api/categories] Error writing categories file:", writeError);
-      return NextResponse.json(
-        { message: `Помилка збереження даних: ${writeError.message}` },
-        { status: 500 }
-      );
-    }
-
-    console.log("[POST /api/categories] Request completed successfully");
+    
+    await saveCategories(categories);
+    
     return NextResponse.json({
       message: "Категорію успішно оновлено",
       categories,
     });
   } catch (err: any) {
-    console.error("[POST /api/categories] Error updating category:", err);
-    console.error("[POST /api/categories] Error stack:", err.stack);
+    console.error("Error updating category:", err);
     return NextResponse.json(
       { 
         message: err.message || "Помилка при оновленні категорії",
@@ -246,4 +293,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

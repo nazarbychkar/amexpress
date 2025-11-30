@@ -162,7 +162,7 @@ export async function upload_cars(
         brand: String(getValue(["Brand", "brand"], "Unknown")),
         sku: String(getValue(["SKU", "sku"], "")),
         mark: String(getValue(["Mark", "mark"], "")),
-        category: String(getValue(["Category", "category"], "")),
+        category: String(getValue(["Category", "category", "Категорія", "категорія"], "")),
         title: String(getValue(["Title", "title"], "No title")),
         description: String(getValue(["Description", "description"], "")),
         text: String(getValue(["Text", "text"], "")),

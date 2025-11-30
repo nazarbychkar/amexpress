@@ -3,25 +3,19 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CATEGORY_MAP } from "@/constants/categories";
 import ScrollToTop from "./ScrollToTop";
 
 interface Category {
   name: string;
   image: string | null;
+  description: string | null;
+  slug: string;
+  priority: number;
 }
 
 interface Categories {
   [key: string]: Category;
 }
-
-const CATEGORY_KEY_MAP: Record<string, string> = {
-  Седани: "sedan",
-  Хетчбеки: "hatchback",
-  Пікапи: "pickup",
-  Кросовери: "crosovers",
-  Позашляховики: "suv",
-};
 
 export default function Catalog() {
   const [categories, setCategories] = useState<Categories>({});
@@ -40,6 +34,17 @@ export default function Catalog() {
       });
   }, []);
 
+  // Filter out "main" category and get only categories with names, sorted by priority
+  const displayCategories = Object.keys(categories)
+    .filter((key) => key !== "main" && categories[key]?.name)
+    .map((key) => ({
+      key,
+      ...categories[key],
+      slug: categories[key].slug || key,
+      priority: categories[key].priority !== undefined ? categories[key].priority : 999,
+    }))
+    .sort((a, b) => a.priority - b.priority);
+
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white px-4 sm:px-6 lg:px-8 py-12">
       <ScrollToTop />
@@ -55,69 +60,63 @@ export default function Catalog() {
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800"></div>
           </div>
+        ) : displayCategories.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Категорії не знайдено</p>
+          </div>
         ) : (
           <div className="space-y-4">
-            {Object.keys(CATEGORY_MAP).map((categoryKey) => {
-              const categorySlug =
-                CATEGORY_KEY_MAP[categoryKey] || categoryKey.toLowerCase();
-              const category =
-                categories[categorySlug] || {
-                  name: categoryKey,
-                  image: null,
-                };
-
-              return (
-                <Link
-                  key={categoryKey}
-                  href={`/catalog/${categorySlug}`}
-                  className="block group relative w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-[1.02]"
-                >
-                  {/* Image Container */}
-                  <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
-                    {category.image ? (
-                      <>
-                        <Image
-                          src={category.image}
-                          alt={category.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-700"
-                          loading="lazy"
-                        />
-                      </>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100"></div>
-                    )}
-                  </div>
-
-                  {/* Enhanced Text Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-start px-8 sm:px-12 md:px-16">
-                    <div className="relative z-10 bg-black/40 px-6 py-4 rounded-xl">
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-2 transform group-hover:translate-x-2 transition-transform duration-300">
-                        {category.name}
-                      </h2>
-                      <div className="w-16 h-1 bg-white/90 rounded-full transform group-hover:translate-x-2 transition-transform duration-300"></div>
-                    </div>
-                  </div>
-
-                  {/* Arrow indicator */}
-                  <div className="absolute right-8 bottom-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg
-                      className="w-8 h-8 text-white drop-shadow-lg transform group-hover:translate-x-2 transition-transform duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M9 5l7 7-7 7"
+            {displayCategories.map((category) => (
+              <Link
+                key={category.key}
+                href={`/catalog/${category.slug}`}
+                className="block group relative w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-[1.02]"
+              >
+                {/* Image Container */}
+                <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+                  {category.image ? (
+                    <>
+                      <Image
+                        src={category.image}
+                        alt={category.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
                       />
-                    </svg>
+                    </>
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100"></div>
+                  )}
+                </div>
+
+                {/* Enhanced Text Overlay */}
+                <div className="absolute inset-0 flex items-center justify-start px-8 sm:px-12 md:px-16">
+                  <div className="relative z-10 bg-black/40 px-6 py-4 rounded-xl">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-2 transform group-hover:translate-x-2 transition-transform duration-300">
+                      {category.name}
+                    </h2>
+                    <div className="w-16 h-1 bg-white/90 rounded-full transform group-hover:translate-x-2 transition-transform duration-300"></div>
                   </div>
-                </Link>
-              );
-            })}
+                </div>
+
+                {/* Arrow indicator */}
+                <div className="absolute right-8 bottom-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg
+                    className="w-8 h-8 text-white drop-shadow-lg transform group-hover:translate-x-2 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </Link>
+            ))}
           </div>
         )}
       </div>
