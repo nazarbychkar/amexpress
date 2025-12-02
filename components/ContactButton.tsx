@@ -80,7 +80,7 @@ export default function ContactButton() {
     <>
       <button
         onClick={openModal}
-        className="fixed bottom-24 right-16 sm:right-20 z-50 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-110"
+        className="fixed bottom-24 right-16 sm:right-20 z-50 p-3 bg-blue-800 text-white rounded-full shadow-lg hover:bg-blue-900 transition-all duration-300 transform hover:scale-110"
         aria-label="Контакти"
       >
         <svg
@@ -228,7 +228,7 @@ export default function ContactButton() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     {loading ? "Відправка..." : "Надіслати"}
                   </button>

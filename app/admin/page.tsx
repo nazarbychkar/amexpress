@@ -17,7 +17,7 @@ export default async function Admin() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-2">
-          <div className="p-3 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg">
+          <div className="p-3 bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -33,7 +33,7 @@ export default async function Admin() {
             </svg>
           </div>
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-800 to-blue-700 bg-clip-text text-transparent">
               Панель адміністратора
             </h1>
             <p className="text-gray-600 mt-1">Управління системою AutoPremium</p>
@@ -50,7 +50,7 @@ export default async function Admin() {
         >
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-gradient-to-br from-gray-700 to-gray-600 rounded-xl">
+              <div className="p-3 bg-gradient-to-br from-blue-700 to-blue-600 rounded-xl">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -158,7 +158,7 @@ export default async function Admin() {
           </Link>
 
         {/* Statistics Card */}
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg border border-gray-700 overflow-hidden text-white">
+        <div className="bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl shadow-lg border border-blue-700 overflow-hidden text-white">
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -209,7 +209,7 @@ export default async function Admin() {
               href="/admin/cars/add"
               className="flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-gray-200 group"
             >
-              <div className="p-3 bg-gray-900 rounded-lg group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-blue-800 rounded-lg group-hover:scale-110 transition-transform">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -233,7 +233,7 @@ export default async function Admin() {
               href="/admin/users"
               className="flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-gray-200 group"
             >
-              <div className="p-3 bg-gray-900 rounded-lg group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-blue-800 rounded-lg group-hover:scale-110 transition-transform">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"

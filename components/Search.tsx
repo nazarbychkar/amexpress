@@ -142,7 +142,7 @@ export default function Search() {
             </div>
             <button
               onClick={() => setShowFilters(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors shadow-md"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors shadow-md"
             >
               <svg
                 className="w-5 h-5"
@@ -384,7 +384,7 @@ export default function Search() {
                 </ul>
                 <Link
                   href="/catalog"
-                  className="inline-block mt-4 px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+                  className="inline-block mt-4 px-6 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors"
                 >
                   Переглянути всі авто
                 </Link>

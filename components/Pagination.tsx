@@ -50,8 +50,8 @@ export default function Pagination({
   const getPageClassName = (pageNum: number) => {
     return `min-w-[36px] sm:min-w-[48px] px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border-2 text-sm sm:text-base font-bold transition-all duration-300 transform ${
       currentPage === pageNum
-        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white border-gray-900 shadow-xl scale-110 ring-2 ring-gray-400 ring-offset-2"
-        : "bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 shadow-lg hover:shadow-xl hover:scale-105 hover:-translate-y-0.5"
+        ? "bg-gradient-to-br from-blue-800 via-blue-900 to-blue-800 text-white border-blue-900 shadow-xl scale-110 ring-2 ring-blue-400 ring-offset-2"
+        : "bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-blue-800 hover:to-blue-900 hover:text-white hover:border-blue-900 shadow-lg hover:shadow-xl hover:scale-105 hover:-translate-y-0.5"
     }`;
   };
 
@@ -97,7 +97,7 @@ export default function Pagination({
           <Link
             href={createPageLink(currentPage - 1)}
             onClick={handleLinkClick}
-            className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-blue-800 hover:to-blue-900 hover:text-white hover:border-blue-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform duration-300"
@@ -146,7 +146,7 @@ export default function Pagination({
           <Link
             href={createPageLink(currentPage + 1)}
             onClick={handleLinkClick}
-            className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-gray-900 hover:to-gray-800 hover:text-white hover:border-gray-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border-2 bg-gradient-to-br from-white to-gray-50 text-gray-700 border-gray-300 hover:from-blue-800 hover:to-blue-900 hover:text-white hover:border-blue-900 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform duration-300"

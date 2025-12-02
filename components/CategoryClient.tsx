@@ -29,11 +29,11 @@ export default function CategoryClient({
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
             Авто
           </h2>
-          <div className="absolute -bottom-1 left-0 w-16 h-1 bg-gradient-to-r from-gray-900 to-transparent rounded-full"></div>
+          <div className="absolute -bottom-1 left-0 w-16 h-1 bg-gradient-to-r from-blue-800 to-transparent rounded-full"></div>
         </div>
         <button
           onClick={() => setShowFilters(true)}
-          className="group relative flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold transform hover:-translate-y-0.5 overflow-hidden"
+          className="group relative flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold transform hover:-translate-y-0.5 overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
           <svg

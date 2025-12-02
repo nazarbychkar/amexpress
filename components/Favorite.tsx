@@ -74,7 +74,7 @@ export default function Favorite() {
               </p>
             </div>
             {cars.length > 0 && (
-              <div className="px-4 py-2 bg-gray-900 text-white rounded-xl font-bold">
+              <div className="px-4 py-2 bg-blue-800 text-white rounded-xl font-bold">
                 {cars.length}
               </div>
             )}
@@ -135,7 +135,7 @@ export default function Favorite() {
             </div>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-6"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-800 text-white rounded-xl hover:bg-blue-900 transition-all font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-6"
             >
               <svg
                 className="w-5 h-5"

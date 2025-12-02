@@ -10,7 +10,7 @@ export default function DeliveryPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Варіанти доставки</h2>
             <div className="space-y-6">
-              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-gray-900">
+              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-blue-800">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">🚢 Доставка з США</h3>
                 <p className="text-gray-700 mb-3">
                   Автомобілі доставляються з США морським транспортом до портів України. 
@@ -21,7 +21,7 @@ export default function DeliveryPage() {
                 </p>
               </div>
 
-              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-gray-900">
+              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-blue-800">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">🚛 Доставка по Україні</h3>
                 <p className="text-gray-700 mb-3">
                   Доставка автомобіля до вашого міста або найближчого відділення. 
@@ -29,7 +29,7 @@ export default function DeliveryPage() {
                 </p>
               </div>
 
-              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-gray-900">
+              <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-blue-800">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">📍 Самовивіз</h3>
                 <p className="text-gray-700">
                   Можливість забрати автомобіль самостійно з нашого офісу в Одесі 
@@ -43,7 +43,7 @@ export default function DeliveryPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Етапи доставки</h2>
             <div className="space-y-4">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-10 h-10 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold">
                   1
                 </div>
                 <div>
@@ -52,7 +52,7 @@ export default function DeliveryPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-10 h-10 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold">
                   2
                 </div>
                 <div>
@@ -61,7 +61,7 @@ export default function DeliveryPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-10 h-10 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold">
                   3
                 </div>
                 <div>
@@ -70,7 +70,7 @@ export default function DeliveryPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-10 h-10 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold">
                   4
                 </div>
                 <div>

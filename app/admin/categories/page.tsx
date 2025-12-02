@@ -361,7 +361,7 @@ export default function CategoriesAdmin() {
               <button
                 onClick={handleCreateCategory}
                 disabled={saving === "new"}
-                className="px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 text-white font-semibold rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {saving === "new" ? (
                   <>
@@ -486,7 +486,7 @@ export default function CategoriesAdmin() {
                         accept="image/*"
                         onChange={(e) => handleFileSelect(categoryKey, e)}
                         disabled={uploading === categoryKey}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-800 file:text-white hover:file:bg-gray-900 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-800 file:text-white hover:file:bg-blue-900 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                       <p className="mt-2 text-xs text-gray-500">
                         Підтримуються формати: JPG, PNG, WebP. Максимальний розмір: 5MB
@@ -567,7 +567,7 @@ export default function CategoriesAdmin() {
                       <button
                         onClick={() => handleSaveCategory(categoryKey)}
                         disabled={saving === categoryKey}
-                        className="flex-1 px-4 py-2 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 text-white font-semibold rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                       >
                         {saving === categoryKey ? (
                           <>

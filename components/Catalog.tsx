@@ -53,7 +53,7 @@ export default function Catalog() {
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-2">
             Виберіть категорію
           </h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-gray-900 to-transparent rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-800 to-transparent rounded-full"></div>
         </div>
 
         {loading ? (

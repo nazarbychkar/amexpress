@@ -111,7 +111,7 @@ export async function handleStartCommand(msg: TelegramBot.Message) {
     // Default welcome message
     const welcomeText = `👋 Привіт, ${user.first_name}!
 
-Ласкаво просимо до AmeXpress! 🚗
+Ласкаво просимо до AutoPremium! 🚗
 
 Тут ви знайдете широкий вибір автомобілів з США за вигідними цінами.
 

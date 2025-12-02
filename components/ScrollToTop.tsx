@@ -33,7 +33,7 @@ export default function ScrollToTop() {
       <ContactButton />
       <button
         onClick={scrollToTop}
-        className="fixed bottom-24 right-4 sm:right-6 z-50 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-110"
+        className="fixed bottom-24 right-4 sm:right-6 z-50 p-3 bg-blue-800 text-white rounded-full shadow-lg hover:bg-blue-900 transition-all duration-300 transform hover:scale-110"
         aria-label="Повернутися наверх"
       >
         <svg

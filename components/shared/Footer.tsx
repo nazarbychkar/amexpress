@@ -79,14 +79,21 @@ export default function Footer() {
             <div className="space-y-4">
               {/* AMERICAN EXPRESS Logo */}
               <div className="flex items-center">
-                <Image
-                  src="/logo1199.svg"
-                  alt="American Express"
-                  width={200}
-                  height={60}
-                  className="h-auto w-auto max-w-[200px]"
-                  priority
-                />
+                <a
+                  href="https://americanexpress.od.ua/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <Image
+                    src="/logo1199.svg"
+                    alt="American Express"
+                    width={200}
+                    height={60}
+                    className="h-auto w-auto max-w-[200px]"
+                    priority
+                  />
+                </a>
               </div>
               
               {/* Copart and IAA Logos in one row */}
@@ -421,7 +428,7 @@ export default function Footer() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     {loading ? "Відправка..." : "Надіслати"}
                   </button>

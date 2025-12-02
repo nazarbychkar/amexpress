@@ -139,7 +139,7 @@ bot.onText(/\/start(?:\s+car_(\d+))?/, async (msg, match) => {
     // Default welcome message (if no car_id or car not found)
     const welcomeText = `👋 Привіт, ${user.first_name}!
 
-Ласкаво просимо до AmeXpress! 🚗
+Ласкаво просимо до AutoPremium! 🚗
 
 Тут ви знайдете широкий вибір автомобілів з США за вигідними цінами.
 

@@ -231,7 +231,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 {loading ? "Відправка..." : "Надіслати"}
               </button>

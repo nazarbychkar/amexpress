@@ -103,7 +103,7 @@ export default function EditCarPage() {
           <p className="text-gray-600 mb-6">{error || "Дані не знайдено"}</p>
           <button
             onClick={() => router.push("/admin/cars")}
-            className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            className="px-6 py-3 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors"
           >
             Повернутися до списку
           </button>
