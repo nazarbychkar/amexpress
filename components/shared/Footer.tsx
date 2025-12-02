@@ -250,14 +250,19 @@ export default function Footer() {
 
             {/* Контактна інформація */}
             <div className="space-y-2 text-sm">
-              <p className="text-gray-700">
-                м. Одеса, Фонтанська дорога 6, офіс 20
-              </p>
               <a
-                href="tel:+380732683634"
+                href="https://www.google.com/maps/place/AmercanExpress/@46.4454857,30.7402532,17.6z/data=!4m6!3m5!1s0x8fbf5be7ef069fc9:0x1696f203ce2dc300!8m2!3d46.4455232!4d30.7410758!16s%2Fg%2F11y3zwkkkr?entry=ttu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-blue-600 transition-colors block"
+              >
+                м. Одеса, Фонтанська дорога 6, офіс 20
+              </a>
+              <a
+                href="tel:+380732683534"
                 className="text-gray-700 hover:text-gray-900 transition-colors block"
               >
-                +380 (73) 268 36 34
+                +380 (73) 268-35-34
               </a>
               <a
                 href="mailto:americanexpress965@gmail.com"
@@ -315,7 +320,7 @@ export default function Footer() {
 
               {/* Telegram Link */}
               <a
-                href="https://t.me/americanex5"
+                href="https://t.me/MykhailoAmericanExpress"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"

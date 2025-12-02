@@ -127,7 +127,7 @@ export default function ContactButton() {
 
               {/* Telegram Link */}
               <a
-                href="https://t.me/americanex5"
+                href="https://t.me/MykhailoAmericanExpress"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"

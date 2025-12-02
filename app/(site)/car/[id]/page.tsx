@@ -136,7 +136,7 @@ export default async function CarPage({ params }: CarPageProps) {
               }}
             />
             <a
-              href="https://t.me/americanex5"
+              href="https://t.me/MykhailoAmericanExpress"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 text-gray-700 font-medium rounded-xl hover:bg-gray-100 border border-gray-300 hover:border-gray-400 transition-all duration-200"
