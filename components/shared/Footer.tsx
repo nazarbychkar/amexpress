@@ -78,20 +78,21 @@ export default function Footer() {
             {/* Логотипи */}
             <div className="space-y-4">
               {/* AMERICAN EXPRESS Logo */}
-              <div className="flex items-center">
+              <div className="flex items-center min-h-[60px]">
                 <a
                   href="https://americanexpress.od.ua/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
+                  className="hover:opacity-80 transition-opacity block"
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/logo1199.svg"
                     alt="American Express"
-                    width={200}
-                    height={60}
-                    className="h-auto w-auto max-w-[200px]"
-                    priority
+                    width="200"
+                    height="60"
+                    className="max-w-[200px] h-auto"
+                    style={{ display: 'block', maxWidth: '200px', height: 'auto' }}
                   />
                 </a>
               </div>
