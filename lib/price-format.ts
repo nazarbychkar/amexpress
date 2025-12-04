@@ -14,8 +14,9 @@ export function formatPrice(priceUSD: string | number | null | undefined): strin
     return "Ціну потрібно уточнити";
   }
 
-  // Try to parse as number
-  const priceNum = parseFloat(priceStr.replace(",", "."));
+  // Remove all spaces and replace comma with dot, then parse as number
+  const cleanedPrice = priceStr.replace(/\s+/g, "").replace(",", ".");
+  const priceNum = parseFloat(cleanedPrice);
   
   if (isNaN(priceNum) || priceNum === 0) {
     return "Ціну потрібно уточнити";

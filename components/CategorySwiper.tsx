@@ -55,7 +55,7 @@ export default function CategorySwiper() {
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
               Виберіть категорію
             </h2>
-            <div className="absolute -bottom-1 left-0 w-20 h-1 bg-gradient-to-r from-blue-800 to-transparent rounded-full"></div>
+            <div className="absolute -bottom-1 left-0 w-20 h-1 bg-gradient-to-r from-blue-950 to-transparent rounded-full"></div>
           </div>
         </div>
         <div className="flex items-center justify-center py-8">
@@ -80,7 +80,7 @@ export default function CategorySwiper() {
         </div>
         <Link
           href="/catalog"
-          className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl hover:from-blue-900 hover:to-blue-950 font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 group"
+          className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-950 to-blue-950 text-white rounded-xl hover:from-blue-950 hover:to-blue-950 font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 group"
         >
           <span>Показати всі</span>
           <svg
@@ -125,7 +125,7 @@ export default function CategorySwiper() {
           <SwiperSlide key={category.key}>
             <Link
               href={`/catalog/${category.slug}`}
-              className="relative flex justify-center items-center text-center py-4 px-5 bg-gradient-to-br from-white to-gray-50 rounded-2xl hover:from-blue-800 hover:to-blue-900 border-2 border-gray-200 hover:border-blue-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] group shadow-md hover:shadow-xl overflow-hidden"
+              className="relative flex justify-center items-center text-center py-4 px-5 bg-gradient-to-br from-white to-gray-50 rounded-2xl hover:from-blue-950 hover:to-blue-950 border-2 border-gray-200 hover:border-blue-950 transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] group shadow-md hover:shadow-xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
               <span className="relative text-sm font-bold text-gray-700 group-hover:text-white truncate transition-colors duration-300 tracking-wide">

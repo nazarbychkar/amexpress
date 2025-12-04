@@ -3,6 +3,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import CarExcelUpload from "@/components/CarExcelUpload";
+import DeleteAllCarsButton from "@/components/DeleteAllCarsButton";
 
 export const revalidate = 0; // disables ISR
 
@@ -307,6 +308,57 @@ export default async function Admin() {
                 <p className="text-sm text-gray-600">Telegram Chat ID та інше</p>
               </div>
             </Link>
+            <Link
+              href="/admin/analytics"
+              className="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl hover:from-purple-100 hover:to-indigo-100 transition-all duration-300 border border-purple-200 group"
+            >
+              <div className="p-3 bg-purple-600 rounded-lg group-hover:scale-110 transition-transform">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">Аналітика відвідувань</h3>
+                <p className="text-sm text-gray-600">Переглянути відвідування каталогу</p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Dangerous Actions */}
+      <div className="mb-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-red-200 p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <svg
+                className="w-5 h-5 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">Небезпечні дії</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <DeleteAllCarsButton />
           </div>
         </div>
       </div>

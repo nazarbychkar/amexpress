@@ -230,7 +230,7 @@ export default async function Category({
 
         {/* Fallback: Show category name if no image */}
         {!categoryImage && (
-          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-blue-800 flex items-center justify-center">
+          <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-br from-blue-950 via-blue-950 to-blue-950 flex items-center justify-center">
             <div className="text-center px-6">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight uppercase">
                 {CATEGORY_NAMES[category] || category}
@@ -279,7 +279,7 @@ export default async function Category({
               </ul>
               <Link
                 href={`/catalog/${category}`}
-                className="inline-block mt-4 px-6 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors"
+                className="inline-block mt-4 px-6 py-2 bg-blue-950 text-white rounded-lg hover:bg-blue-950 transition-colors"
               >
                 Скинути фільтри
               </Link>

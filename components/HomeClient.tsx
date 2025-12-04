@@ -150,7 +150,7 @@ export default function HomeClient({
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowFilters(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors shadow-md"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-950 text-white rounded-lg hover:bg-blue-950 transition-colors shadow-md"
             >
               <svg
                 className="w-5 h-5"
@@ -302,12 +302,12 @@ export default function HomeClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Перевага 1 */}
           <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-300 transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-950 to-blue-950 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">Перевірена історія</h3>
+            <h3 className="text-xl font-bold text-blue-950 mb-2">Перевірена історія</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
               Всі автомобілі проходять ретельну перевірку перед доставкою
             </p>
@@ -315,12 +315,12 @@ export default function HomeClient({
 
           {/* Перевага 2 */}
           <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-300 transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-950 to-blue-950 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">Вигідні ціни</h3>
+            <h3 className="text-xl font-bold text-blue-950 mb-2">Вигідні ціни</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
               Автомобілі за ціною нижче ринку без прихованих платежів
             </p>
@@ -328,12 +328,12 @@ export default function HomeClient({
 
           {/* Перевага 3 */}
           <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-300 transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-950 to-blue-950 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">Швидка доставка</h3>
+            <h3 className="text-xl font-bold text-blue-950 mb-2">Швидка доставка</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
               Оперативна доставка автомобілів з США до України
             </p>
@@ -341,12 +341,12 @@ export default function HomeClient({
 
           {/* Перевага 4 */}
           <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-300 transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-950 to-blue-950 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">Підтримка 24/7</h3>
+            <h3 className="text-xl font-bold text-blue-950 mb-2">Підтримка 24/7</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
               Професійна консультація та підтримка на всіх етапах
             </p>

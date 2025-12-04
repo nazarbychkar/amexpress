@@ -32,7 +32,7 @@ export default function Toast({ message, type, onClose }: ToastProps) {
         className={`px-6 py-4 rounded-2xl shadow-strong backdrop-blur-md ${
           type === "success"
             ? "bg-gradient-to-r from-green-500 to-green-600 text-white"
-            : "bg-gradient-to-r from-blue-500 to-blue-600 text-white"
+            : "bg-gradient-to-r from-blue-800 to-blue-900 text-white"
         } flex items-center gap-3 animate-slide-up`}
       >
         {type === "success" ? (

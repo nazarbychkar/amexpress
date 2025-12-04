@@ -61,6 +61,12 @@ export default function ContactButton() {
       }
 
       setSubmitted(true);
+      
+      // Зберегти телефон в localStorage для аналітики
+      if (phone && typeof window !== "undefined") {
+        localStorage.setItem("userPhone", phone);
+      }
+      
       setTimeout(() => {
         setName("");
         setPhone("");
@@ -80,7 +86,7 @@ export default function ContactButton() {
     <>
       <button
         onClick={openModal}
-        className="fixed bottom-24 right-16 sm:right-20 z-50 p-3 bg-blue-800 text-white rounded-full shadow-lg hover:bg-blue-900 transition-all duration-300 transform hover:scale-110"
+        className="fixed bottom-24 right-16 sm:right-20 z-50 p-3 bg-blue-950 text-white rounded-full shadow-lg hover:bg-blue-950 transition-all duration-300 transform hover:scale-110"
         aria-label="Контакти"
       >
         <svg
@@ -130,7 +136,7 @@ export default function ContactButton() {
                 href="https://t.me/MykhailoAmericanExpress"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
+                className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
               >
                 <svg
                   className="w-6 h-6"
@@ -228,7 +234,7 @@ export default function ContactButton() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full px-6 py-3 bg-blue-950 text-white font-bold rounded-xl hover:bg-blue-950 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     {loading ? "Відправка..." : "Надіслати"}
                   </button>

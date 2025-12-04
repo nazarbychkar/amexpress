@@ -133,7 +133,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
             href="https://t.me/MykhailoAmericanExpress"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
+            className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
           >
             <svg
               className="w-6 h-6"
@@ -231,7 +231,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full px-6 py-3 bg-blue-950 text-white font-bold rounded-xl hover:bg-blue-950 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 {loading ? "Відправка..." : "Надіслати"}
               </button>

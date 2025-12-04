@@ -116,7 +116,7 @@ export default async function CarPage({ params }: CarPageProps) {
             {car.priceUSD &&
               car.priceUSD !== "0" &&
               car.priceUSD !== "0.00" && (
-                <p className="text-sm text-gray-500">ціна за шт.</p>
+                <p className="text-sm text-gray-500">Ціна в Україні</p>
               )}
             {car.priceOld && car.priceOld > 0 && (
               <p className="text-lg text-gray-400 line-through mt-1">

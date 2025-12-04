@@ -65,4 +65,22 @@ model User {
 
   createdAt     DateTime @default(now()) // Дата створення
   updatedAt     DateTime @updatedAt     // Дата оновлення
+  
+  catalogVisits CatalogVisit[] // Відвідування каталогу
+}
+
+model CatalogVisit {
+  id            Int      @id @default(autoincrement())  // Унікальний ідентифікатор
+  userId        Int?     // ID користувача (якщо авторизований через Telegram)
+  phone         String?  // Номер телефону користувача
+  username      String?  // Нік користувача (username)
+  firstName     String?  // Ім'я користувача
+  lastName      String?  // Прізвище користувача
+  userAgent     String?  // User Agent браузера
+  ipAddress     String?  // IP адреса
+  visitedAt     DateTime @default(now()) // Час відвідування
+  
+  user          User?    @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime @default(now()) // Дата створення
 }

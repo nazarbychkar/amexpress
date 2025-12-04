@@ -74,6 +74,11 @@ export default function Order({ carInfo }: OrderProps = {}) {
 
       setSubmitted(true);
       
+      // Зберегти телефон в localStorage для аналітики
+      if (phone && typeof window !== "undefined") {
+        localStorage.setItem("userPhone", phone);
+      }
+      
       // If on car page, redirect after 5 seconds
       if (carInfo?.id) {
         setTimeout(() => {
@@ -103,7 +108,7 @@ export default function Order({ carInfo }: OrderProps = {}) {
     <>
             <button
               onClick={openModal}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white font-bold text-lg rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-950 to-blue-950 text-white font-bold text-lg rounded-xl hover:from-blue-950 hover:to-blue-950 transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
             >
               Зацікавило авто
             </button>
@@ -207,7 +212,7 @@ export default function Order({ carInfo }: OrderProps = {}) {
                          <button
                            type="submit"
                            disabled={loading}
-                           className="w-full px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 text-white font-bold rounded-xl hover:from-blue-900 hover:to-blue-950 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 active:scale-[0.98]"
+                           className="w-full px-6 py-3 bg-gradient-to-r from-blue-950 to-blue-950 text-white font-bold rounded-xl hover:from-blue-950 hover:to-blue-950 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 active:scale-[0.98]"
                          >
                            {loading ? "Відправка..." : "Надіслати"}
                          </button>

@@ -34,7 +34,7 @@ export default function BottomNav() {
   const getLinkClass = (path: string) => {
     return pathname === path
       ? "flex flex-col items-center text-sm text-white font-semibold transition-transform transform hover:scale-110 relative"
-      : "flex flex-col items-center text-sm text-gray-400 hover:text-gray-300 transition-transform transform hover:scale-110 relative";
+      : "flex flex-col items-center text-sm text-white hover:text-white/80 transition-transform transform hover:scale-110 relative";
   };
 
   return (
@@ -42,7 +42,7 @@ export default function BottomNav() {
       <div className="max-w-md mx-auto flex justify-around items-center py-3">
         <Link href="/" className={getLinkClass("/")}>
           <svg
-            className="w-7 h-7 mb-1 transition-all"
+            className="w-7 h-7 mb-1 transition-all text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -59,7 +59,7 @@ export default function BottomNav() {
 
         <Link href="/catalog" className={getLinkClass("/catalog")}>
           <svg
-            className="w-7 h-7 mb-1 transition-all"
+            className="w-7 h-7 mb-1 transition-all text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -76,7 +76,7 @@ export default function BottomNav() {
 
         <Link href="/search" className={getLinkClass("/search")}>
           <svg
-            className="w-7 h-7 mb-1 transition-all"
+            className="w-7 h-7 mb-1 transition-all text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -94,7 +94,7 @@ export default function BottomNav() {
         <Link href="/favorites" className={getLinkClass("/favorites")}>
           <div className="relative">
             <svg
-              className="w-7 h-7 mb-1 transition-all"
+              className="w-7 h-7 mb-1 transition-all text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -177,7 +177,7 @@ export default function Footer() {
                 href="https://t.me/+GU9D7fommmc4Nzgy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
+                className="w-10 h-10 bg-blue-800 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors"
                 title="Telegram"
               >
                 <svg
@@ -262,7 +262,7 @@ export default function Footer() {
                 href="https://www.google.com/maps/place/AmercanExpress/@46.4454857,30.7402532,17.6z/data=!4m6!3m5!1s0x8fbf5be7ef069fc9:0x1696f203ce2dc300!8m2!3d46.4455232!4d30.7410758!16s%2Fg%2F11y3zwkkkr?entry=ttu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-700 hover:text-blue-600 transition-colors block"
+                className="text-gray-700 hover:text-blue-950 transition-colors block"
               >
                 м. Одеса, Фонтанська дорога 6, офіс 20
               </a>
@@ -331,7 +331,7 @@ export default function Footer() {
                 href="https://t.me/MykhailoAmericanExpress"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
+                className="flex items-center justify-center gap-3 w-full mb-6 px-6 py-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold"
               >
                 <svg
                   className="w-6 h-6"
@@ -429,7 +429,7 @@ export default function Footer() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-6 py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full px-6 py-3 bg-blue-950 text-white font-bold rounded-xl hover:bg-blue-950 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     {loading ? "Відправка..." : "Надіслати"}
                   </button>
