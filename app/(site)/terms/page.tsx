@@ -10,8 +10,8 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Загальні положення</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Ця публічна оферта (далі — "Оферта") є офіційною пропозицією American Express Auto 
-              (далі — "Продавець") укласти договір купівлі-продажу автомобілів на умовах, 
+              Ця публічна оферта (далі — &quot;Оферта&quot;) є офіційною пропозицією American Express Auto 
+              (далі — &quot;Продавець&quot;) укласти договір купівлі-продажу автомобілів на умовах, 
               викладених нижче.
             </p>
             <p className="text-gray-700 leading-relaxed">
@@ -35,14 +35,14 @@ export default function TermsPage() {
               залежно від курсу валют та умов доставки.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Оплата здійснюється згідно з умовами, зазначеними на сторінці "Оплата".
+              Оплата здійснюється згідно з умовами, зазначеними на сторінці &quot;Оплата&quot;.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Доставка</h2>
             <p className="text-gray-700 leading-relaxed">
-              Умови доставки вказані на сторінці "Доставка". Терміни та вартість доставки 
+              Умови доставки вказані на сторінці &quot;Доставка&quot;. Терміни та вартість доставки 
               розраховуються індивідуально для кожного замовлення.
             </p>
           </section>

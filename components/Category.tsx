@@ -196,6 +196,7 @@ export default async function Category({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 mb-16">
         {categoryImage && (
           <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-t-3xl overflow-hidden transform transition-all duration-300">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={categoryImage}
               alt={CATEGORY_NAMES[category] || "Категорія"}

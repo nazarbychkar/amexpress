@@ -50,7 +50,7 @@ export async function GET() {
     }
 
     return NextResponse.json(settings);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error reading settings:", error);
     return NextResponse.json(
       { error: "Failed to read settings" },
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
       success: true,
       settings,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating settings:", error);
     return NextResponse.json(
       { error: "Failed to update settings" },

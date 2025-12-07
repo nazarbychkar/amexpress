@@ -116,6 +116,7 @@ export default async function Page({ searchParams }: PageProps) {
                     >
                   | null
                   | undefined;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 username: any;
                 firstName:
                   | string
@@ -141,6 +142,7 @@ export default async function Page({ searchParams }: PageProps) {
                     >
                   | null
                   | undefined;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 lastName: any;
                 languageCode:
                   | string
@@ -166,6 +168,7 @@ export default async function Page({ searchParams }: PageProps) {
                     >
                   | null
                   | undefined;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 isBot: any;
                 createdAt: string | number | Date;
               }) => (

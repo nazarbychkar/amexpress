@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Auth error:", error);
     return NextResponse.json(
       { error: "Internal server error" },

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 
 interface Category {
   name: string;
@@ -104,8 +103,9 @@ export default function CategoriesAdmin() {
           fileInputRefs.current[categoryKey]!.value = "";
         }
       }
-    } catch (err: any) {
-      setError(err.message || "Помилка підключення до сервера");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Помилка підключення до сервера";
+      setError(errorMessage);
     } finally {
       setUploading(null);
     }
@@ -140,7 +140,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при збереженні");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError("Помилка підключення до сервера");
     } finally {
       setSaving(null);
@@ -175,7 +175,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при видаленні");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError("Помилка підключення до сервера");
     } finally {
       setDeleting(null);
@@ -216,7 +216,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при створенні");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError("Помилка підключення до сервера");
     } finally {
       setSaving(null);
@@ -464,6 +464,7 @@ export default function CategoriesAdmin() {
                           Поточне фото:
                         </label>
                         <div className="relative w-full h-48 rounded-lg overflow-hidden border-2 border-gray-200 bg-gray-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={category.image}
                             alt={category.name}

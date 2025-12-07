@@ -79,10 +79,11 @@ export async function POST(request: NextRequest) {
       { success: true, visitId: visit.id },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating catalog visit:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to record visit", details: error.message },
+      { error: "Failed to record visit", details: errorMessage },
       { status: 500 }
     );
   }

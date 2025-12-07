@@ -9,7 +9,8 @@ export default function EditCarPage() {
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [formData, setFormData] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Load car data
@@ -39,9 +40,10 @@ export default function EditCarPage() {
 
         setFormData(data);
         setLoading(false);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error loading car:", err);
-        setError(err.message || "Помилка завантаження даних");
+        const errorMessage = err instanceof Error ? err.message : "Помилка завантаження даних";
+        setError(errorMessage);
         setLoading(false);
       }
     };
@@ -77,9 +79,10 @@ export default function EditCarPage() {
         const error = await response.json();
         alert("Помилка: " + (error.error || error.message || "Невідома помилка"));
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error updating car:", err);
-      alert("Помилка: " + (err.message || "Не вдалося оновити автомобіль"));
+      const errorMessage = err instanceof Error ? err.message : "Не вдалося оновити автомобіль";
+      alert("Помилка: " + errorMessage);
     }
   };
 
@@ -133,7 +136,7 @@ export default function EditCarPage() {
               {key === "description" || key === "text" ? (
                 <textarea
                   name={key}
-                  value={formData[key]}
+                  value={String(formData[key] ?? "")}
                   onChange={handleChange}
                   rows={3}
                   className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -149,7 +152,7 @@ export default function EditCarPage() {
                   <input
                     type="text"
                     name={key}
-                    value={formData[key] ?? ""}
+                    value={String(formData[key] ?? "")}
                     onChange={handleChange}
                     className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />

@@ -59,18 +59,6 @@ export default async function CarPage({ params }: CarPageProps) {
     },
   });
 
-  // Get category name in Ukrainian
-  const getCategoryName = (category: string) => {
-    const categoryMap: Record<string, string> = {
-      sedan: "Седани",
-      suv: "Позашляховики",
-      crossover: "Кросовери",
-      pickup: "Пікапи",
-      main: "Головна",
-    };
-    return categoryMap[category.toLowerCase()] || category;
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-24">
       <CarViewTracker 

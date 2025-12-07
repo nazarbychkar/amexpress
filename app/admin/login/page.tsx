@@ -48,7 +48,7 @@ export default function LoginPage() {
       } else {
         setError(data.error || "Помилка входу");
       }
-    } catch (err: any) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setLoading(false);

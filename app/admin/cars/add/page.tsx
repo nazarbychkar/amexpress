@@ -124,7 +124,7 @@ export default function AddCarPage() {
           setErrorMessage(result.message || "Помилка при додаванні автомобіля");
         }
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("Помилка підключення до сервера");
     } finally {
       setIsSubmitting(false);

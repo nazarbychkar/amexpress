@@ -67,7 +67,7 @@ export default function SettingsPage() {
       } else {
         setError(data.error || "Помилка збереження налаштувань");
       }
-    } catch (err: any) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setSaving(false);

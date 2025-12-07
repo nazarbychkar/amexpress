@@ -7,15 +7,6 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-const CATEGORY_NAMES: Record<string, string> = {
-  sedan: "Седани",
-  hatchback: "Хетчбеки",
-  pickup: "Пікапи",
-  crosovers: "Кросовери",
-  suv: "Позашляховики",
-  main: "Головна",
-};
-
 export default async function CategoryPage({
   params,
   searchParams,

@@ -53,10 +53,11 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(total / limit),
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching catalog visits:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to fetch visits", details: error.message },
+      { error: "Failed to fetch visits", details: errorMessage },
       { status: 500 }
     );
   }
