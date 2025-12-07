@@ -11,7 +11,7 @@ import Toast from "./Toast";
 
 interface Car {
   id: Key | null | undefined;
-  photo: any;
+  photo: string | null;
   title: string;
   priceUSD: string;
 }
@@ -30,16 +30,14 @@ export default function HomeClient({
   modelsByBrand,
 }: HomeClientProps) {
   const [showFilters, setShowFilters] = useState(false);
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
+  const [favorites, setFavorites] = useState<number[]>(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("favorites");
-      setFavorites(stored ? JSON.parse(stored) : []);
+      return stored ? JSON.parse(stored) : [];
     }
-  }, []);
+    return [];
+  });
+  const [isMounted] = useState(() => typeof window !== "undefined");
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");

@@ -19,7 +19,7 @@ export async function GET(
     }
 
     return NextResponse.json(user);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Помилка сервера" }, { status: 500 });
   }
 }
@@ -37,7 +37,7 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedUser);
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: "Не вдалося оновити користувача" },
       { status: 500 }
@@ -55,7 +55,7 @@ export async function DELETE(
     });
 
     return NextResponse.json({ message: "Користувача видалено" });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: "Не вдалося видалити користувача" },
       { status: 500 }

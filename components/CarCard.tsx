@@ -16,17 +16,16 @@ interface CarCardProps {
 }
 
 export default function CarCard({ car }: CarCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-
-  useEffect(() => {
+  const [isFavorite, setIsFavorite] = useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("favorites");
       const favorites = stored ? JSON.parse(stored) : [];
-      setIsFavorite(favorites.includes(Number(car.id)));
+      return favorites.includes(Number(car.id));
     }
-  }, [car.id]);
+    return false;
+  });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();

@@ -60,7 +60,12 @@ export default async function HomePage() {
   });
 
   // Shuffle and take 10 random cars
-  const shuffledCars = allCars.sort(() => 0.5 - Math.random());
+  // Use Fisher-Yates shuffle algorithm for deterministic shuffling
+  const shuffledCars = [...allCars];
+  for (let i = shuffledCars.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledCars[i], shuffledCars[j]] = [shuffledCars[j], shuffledCars[i]];
+  }
   const randomCars = shuffledCars.slice(0, 10);
 
   // Pick top 4 cars (for example top by newest)

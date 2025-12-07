@@ -18,6 +18,7 @@ export default function CarViewTracker({ car }: CarViewTrackerProps) {
       let recentCars = stored ? JSON.parse(stored) : [];
       
       // Remove if already exists
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recentCars = recentCars.filter((c: any) => Number(c.id) !== Number(car.id));
       // Add to beginning
       recentCars.unshift({

@@ -23,8 +23,8 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Предмет договору</h2>
             <p className="text-gray-700 leading-relaxed">
-              Продавець зобов'язується передати у власність Замовнику автомобіль (товар), 
-              а Замовник зобов'язується прийняти товар та оплатити його на умовах цієї Оферти.
+              Продавець зобов&apos;язується передати у власність Замовнику автомобіль (товар), 
+              а Замовник зобов&apos;язується прийняти товар та оплатити його на умовах цієї Оферти.
             </p>
           </section>
 
@@ -48,7 +48,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Права та обов'язки сторін</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Права та обов&apos;язки сторін</h2>
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Права Продавця:</h3>

@@ -184,7 +184,7 @@ export default function CategoriesAdmin() {
 
   const handleCreateCategory = async () => {
     if (!newCategory.name || !newCategory.slug) {
-      setError("Назва та slug обов'язкові");
+      setError("Назва та slug обов&apos;язкові");
       return;
     }
 

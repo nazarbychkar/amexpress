@@ -34,8 +34,9 @@ export default function DeleteAllCarsButton() {
       setConfirmText("");
       router.refresh();
       alert(`Успішно видалено ${data.deletedCount} автомобілів`);
-    } catch (err: any) {
-      setError(err.message || "Помилка видалення автомобілів");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Помилка видалення автомобілів";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

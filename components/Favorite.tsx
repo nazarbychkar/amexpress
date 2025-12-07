@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/price-format";
 import ScrollToTop from "./ScrollToTop";
 import CarCardSkeleton from "./CarCardSkeleton";
 import CarCard from "./CarCard";
@@ -51,6 +49,7 @@ export default function Favorite() {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const removeFavorite = (carId: number) => {
     const newFavorites = favorites.filter((id) => id !== carId);
     setFavorites(newFavorites);

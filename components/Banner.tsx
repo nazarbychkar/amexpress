@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ContactButton from "./ContactButton";
+import Image from "next/image";
 
 interface BannerProps {
   bannerTimestamp: number;
@@ -18,10 +18,11 @@ export default function Banner({ bannerTimestamp }: BannerProps) {
           className="block w-full group"
         >
           <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500 border-4 border-white cursor-pointer">
-            <img
+            <Image
               src={`/sale-banner.png?v=${bannerTimestamp}`}
               alt="Акція, Знижки"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
           </div>
@@ -93,9 +94,10 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
         setSubmitted(false);
         onClose();
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error submitting form:", err);
-      setError(err.message || "Помилка відправки даних. Спробуйте ще раз.");
+      const errorMessage = err instanceof Error ? err.message : "Помилка відправки даних. Спробуйте ще раз.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -125,7 +127,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
 
         <div className="p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Зв'язатися з нами
+            Зв&apos;язатися з нами
           </h2>
 
           {/* Telegram Link */}
@@ -175,7 +177,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
                 Дані успішно надіслані!
               </p>
               <p className="text-gray-600 text-sm mt-2">
-                Ми зв'яжемося з вами найближчим часом
+                Ми зв&apos;яжемося з вами найближчим часом
               </p>
             </div>
           ) : (
@@ -187,14 +189,14 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
               )}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Ім'я
+                  Ім&apos;я
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  placeholder="Ваше ім'я"
+                  placeholder="Ваше ім&apos;я"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
                 />
               </div>
@@ -217,7 +219,7 @@ function ContactButtonModal({ onClose }: { onClose: () => void }) {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Повідомлення (необов'язково)
+                  Повідомлення (необов&apos;язково)
                 </label>
                 <textarea
                   value={message}

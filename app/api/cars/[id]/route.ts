@@ -37,6 +37,7 @@ export async function PUT(
     const data = await req.json();
 
     // Prepare update data with proper type conversions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: any = { ...data };
 
     // Remove price field (not used, we use priceUSD instead)
@@ -105,12 +106,13 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedCar);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("UPDATE car error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Невідома помилка";
     return NextResponse.json(
       { 
         error: "Не вдалося оновити машину",
-        details: err.message || "Невідома помилка"
+        details: errorMessage
       },
       { status: 500 }
     );

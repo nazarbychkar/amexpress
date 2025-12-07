@@ -17,19 +17,20 @@ export async function POST(request: NextRequest) {
     await handleWebhookUpdate(body);
     
     return NextResponse.json({ ok: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error processing webhook:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       { 
         error: "Internal server error",
-        message: error.message || "Unknown error"
+        message: errorMessage
       },
       { status: 500 }
     );
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   // For webhook verification (if needed)
   return NextResponse.json({ message: "Telegram webhook endpoint" });
 }

@@ -102,7 +102,7 @@ export default function CarExcelUpload() {
       } else {
         setError(data.message || "Помилка при імпорті");
       }
-    } catch (err: any) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setLoading(false);

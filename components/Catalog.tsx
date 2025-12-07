@@ -39,6 +39,7 @@ export default function Catalog() {
     const trackVisit = async () => {
       try {
         // Отримати інформацію про користувача з Telegram WebApp (якщо доступна)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let telegramData: any = null;
         let phone: string | null = null;
         let username: string | null = null;

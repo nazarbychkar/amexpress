@@ -1,7 +1,6 @@
 // app/api/cars/route.ts
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -34,7 +33,7 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!data.tildaUid || data.tildaUid.trim() === "") {
       return NextResponse.json(
-        { message: "tildaUid є обов'язковим полем" },
+        { message: "tildaUid є обов&apos;язковим полем" },
         { status: 400 }
       );
     }
@@ -89,12 +88,14 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(car, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating car:", error);
 
     // Handle Prisma unique constraint violation
-    if (error.code === "P2002") {
-      const field = error.meta?.target?.[0] || "tildaUid";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (error && typeof error === "object" && "code" in error && (error as any).code === "P2002") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const field = (error as any).meta?.target?.[0] || "tildaUid";
       return NextResponse.json(
         { 
           message: `Автомобіль з таким ${field} вже існує. Будь ласка, згенеруйте новий ${field}.`,
@@ -104,8 +105,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const errorMessage = error instanceof Error ? error.message : "Internal server error";
     return NextResponse.json(
-      { message: error.message || "Internal server error" },
+      { message: errorMessage },
       { status: 500 }
     );
   }

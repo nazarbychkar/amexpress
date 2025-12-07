@@ -20,7 +20,7 @@ async function ensureDataDir() {
 // Helper function to load categories
 async function loadCategories() {
   await ensureDataDir();
-  let categories: Record<string, { name: string; image: string | null; description: string | null; slug: string; priority: number }> = {};
+  const categories: Record<string, { name: string; image: string | null; description: string | null; slug: string; priority: number }> = {};
   
   if (existsSync(CATEGORIES_FILE)) {
     const fileContent = await readFile(CATEGORIES_FILE, "utf-8");
@@ -47,10 +47,11 @@ export async function GET() {
   try {
     const categories = await loadCategories();
     return NextResponse.json(categories);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error reading categories:", err);
+    const errorMessage = err instanceof Error ? err.message : "Помилка при читанні категорій";
     return NextResponse.json(
-      { message: err.message || "Помилка при читанні категорій" },
+      { message: errorMessage },
       { status: 500 }
     );
   }
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
       
       if (!name || !slug) {
         return NextResponse.json(
-          { message: "Назва та slug обов'язкові" },
+          { message: "Назва та slug обов&apos;язкові" },
           { status: 400 }
         );
       }
@@ -259,9 +260,10 @@ export async function POST(request: NextRequest) {
         if (categories[finalKey]) {
           categories[finalKey].image = imagePath;
         }
-      } catch (fileError: any) {
+      } catch (fileError: unknown) {
+        const errorMessage = fileError instanceof Error ? fileError.message : "Невідома помилка";
         return NextResponse.json(
-          { message: `Помилка збереження файлу: ${fileError.message}` },
+          { message: `Помилка збереження файлу: ${errorMessage}` },
           { status: 500 }
         );
       }
@@ -282,12 +284,14 @@ export async function POST(request: NextRequest) {
       message: "Категорію успішно оновлено",
       categories,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error updating category:", err);
+    const errorMessage = err instanceof Error ? err.message : "Помилка при оновленні категорії";
+    const errorStack = err instanceof Error && process.env.NODE_ENV === "development" ? err.stack : undefined;
     return NextResponse.json(
       { 
-        message: err.message || "Помилка при оновленні категорії",
-        error: process.env.NODE_ENV === "development" ? err.stack : undefined
+        message: errorMessage,
+        error: errorStack
       },
       { status: 500 }
     );

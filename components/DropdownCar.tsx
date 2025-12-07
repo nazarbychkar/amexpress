@@ -1,6 +1,7 @@
 "use client";
 
 // Function to infer car type based on certain characteristics
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const inferCarType = (car: any) => {
   if (car.category?.toLowerCase().includes("suv")) {
     return "SUV";
@@ -12,6 +13,7 @@ const inferCarType = (car: any) => {
   return "Sedan"; // Default fallback
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function DropdownCar({ car }: { car: any }) {
   // Infer car type based on some logic
   const carType = inferCarType(car);

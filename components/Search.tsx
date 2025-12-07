@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/price-format";
 import CarCard from "./CarCard";
 import CarCardSkeleton from "./CarCardSkeleton";
 import ScrollToTop from "./ScrollToTop";

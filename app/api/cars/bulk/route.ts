@@ -33,11 +33,12 @@ export async function POST(request: NextRequest) {
         processed: stats.created + stats.updated,
       },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Upload error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Помилка при завантаженні файлу";
 
     return NextResponse.json(
-      { message: err.message || "Помилка при завантаженні файлу" },
+      { message: errorMessage },
       { status: 500 }
     );
   }

@@ -137,7 +137,7 @@ export default function SettingsPage() {
                 Telegram Chat ID
               </label>
               <p className="text-sm text-gray-500 mb-3">
-                ID чату, куди будуть надходити заявки з форм зв'язку та замовлень
+                ID чату, куди будуть надходити заявки з форм зв&apos;язку та замовлень
               </p>
               <input
                 id="telegramChatId"

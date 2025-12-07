@@ -84,7 +84,7 @@ export default function DeliveryPage() {
           <section className="bg-gray-50 rounded-2xl p-6">
             <p className="text-gray-700">
               <strong>Увага:</strong> Для розрахунку точної вартості та термінів доставки, 
-              зв'яжіться з нашими менеджерами за телефонами: 
+              зв&apos;яжіться з нашими менеджерами за телефонами: 
               <a href="tel:+380679395702" className="text-gray-900 font-semibold hover:underline ml-1">
                 +38 067 939 57 02
               </a>

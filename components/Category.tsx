@@ -16,6 +16,7 @@ interface CategoryProps {
   filters?: Record<string, string | undefined>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CATEGORY_MAP: Record<string, string> = {
   Седани: "sedan",
   Позашляховики: "suv",
@@ -98,6 +99,7 @@ export default async function Category({
   }
 
   // Build "where" filter for Prisma
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {};
 
   // CATEGORY FILTER USING MAP
@@ -133,9 +135,11 @@ export default async function Category({
   }
   if (filters.priceFrom || filters.priceTo) {
     // Include cars with no price (null, 0, or "0") along with cars in the price range
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const priceConditions: any[] = [];
     
     // Cars with price in the specified range
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const priceRange: any = {};
     if (filters.priceFrom) {
       priceRange.gte = parseFloat(filters.priceFrom);

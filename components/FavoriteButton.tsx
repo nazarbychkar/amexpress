@@ -9,17 +9,16 @@ interface FavoriteButtonProps {
 }
 
 export default function FavoriteButton({ carId, className = "" }: FavoriteButtonProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-
-  useEffect(() => {
+  const [isFavorite, setIsFavorite] = useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("favorites");
       const favorites = stored ? JSON.parse(stored) : [];
-      setIsFavorite(favorites.includes(carId));
+      return favorites.includes(carId);
     }
-  }, [carId]);
+    return false;
+  });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();

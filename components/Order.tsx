@@ -96,9 +96,10 @@ export default function Order({ carInfo }: OrderProps = {}) {
           closeModal();
         }, 2000);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error submitting form:", err);
-      setError(err.message || "Помилка відправки даних. Спробуйте ще раз.");
+      const errorMessage = err instanceof Error ? err.message : "Помилка відправки даних. Спробуйте ще раз.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -181,14 +182,14 @@ export default function Order({ carInfo }: OrderProps = {}) {
                   )}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Ім'я
+                      Ім&apos;я
                     </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  placeholder="Ваше ім'я"
+                  placeholder="Ваше ім&apos;я"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
                 />
                   </div>

@@ -35,9 +35,11 @@ async function getTelegramChatId(): Promise<string | null> {
     
     console.log("[getTelegramChatId] Chat ID not found in settings or env");
     return null;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[getTelegramChatId] Error reading settings:", error);
-    console.error("[getTelegramChatId] Error stack:", error.stack);
+    if (error instanceof Error) {
+      console.error("[getTelegramChatId] Error stack:", error.stack);
+    }
     // Fallback to env variable
     const envChatId = process.env.TELEGRAM_CHAT_ID;
     if (envChatId) {
@@ -73,8 +75,8 @@ export async function POST(request: NextRequest) {
 
     // Build message text
     let messageText = `🔔 *Новий запит з сайту*\n\n`;
-    messageText += `📋 *Тип форми:* ${formType === "order" ? "Замовлення" : "Зв'язок"}\n\n`;
-    messageText += `👤 *Ім'я:* ${name}\n`;
+    messageText += `📋 *Тип форми:* ${formType === "order" ? "Замовлення" : "Зв&apos;язок"}\n\n`;
+    messageText += `👤 *Ім&apos;я:* ${name}\n`;
     messageText += `📞 *Телефон:* ${phone}\n`;
 
     if (message) {
@@ -120,10 +122,11 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending contact form:", error);
+    const errorMessage = error instanceof Error ? error.message : "Internal server error";
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

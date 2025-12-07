@@ -57,9 +57,11 @@ export async function GET(
         "Cache-Control": "public, max-age=3600, must-revalidate",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[GET /api/categories/image] Error serving category image:", error);
-    console.error("[GET /api/categories/image] Error stack:", error.stack);
+    if (error instanceof Error) {
+      console.error("[GET /api/categories/image] Error stack:", error.stack);
+    }
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

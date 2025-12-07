@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import HomeFilters from "./HomeFilters";
 
 interface CategoryClientProps {
@@ -13,10 +13,8 @@ interface CategoryClientProps {
 export default function CategoryClient({
   brands,
   modelsByBrand,
-  categorySlug,
 }: CategoryClientProps) {
   const [showFilters, setShowFilters] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   // Check if filters are applied

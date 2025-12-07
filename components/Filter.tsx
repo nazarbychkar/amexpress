@@ -64,7 +64,7 @@ export default function CategoryFilters() {
     params.delete("page"); // Reset to first page when filters are applied
 
     router.replace(`${pathname}?${params.toString()}`);
-  }, [brand, year, engineType, priceMin, priceMax]);
+  }, [brand, year, engineType, priceMin, priceMax, pathname, router]);
 
   return (
     <div className="bg-white shadow p-4 rounded mb-6 space-y-4">

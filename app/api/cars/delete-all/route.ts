@@ -9,7 +9,7 @@ async function checkAdminAuth() {
   return !!session;
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE() {
   try {
     // Перевірити автентифікацію
     const isAuthenticated = await checkAdminAuth();
@@ -25,10 +25,11 @@ export async function DELETE(request: NextRequest) {
       message: `Видалено ${result.count} автомобілів`,
       deletedCount: result.count,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error deleting all cars:", error);
+    const errorMessage = error instanceof Error ? error.message : "Невідома помилка";
     return NextResponse.json(
-      { error: "Failed to delete cars", details: error.message },
+      { error: "Failed to delete cars", details: errorMessage },
       { status: 500 }
     );
   }

@@ -85,7 +85,7 @@ export default function ImageUpload() {
     } else {
         setError(data.message || "Помилка при завантаженні");
       }
-    } catch (err: any) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setLoading(false);

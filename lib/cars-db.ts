@@ -1,6 +1,5 @@
 import * as XLSX from "xlsx";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PrismaConnectorCars = {
   car: {
     upsert: (arg0: {

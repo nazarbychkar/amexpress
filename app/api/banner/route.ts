@@ -45,10 +45,11 @@ export async function POST(request: NextRequest) {
       path: "/sale-banner.png",
       timestamp: timestamp,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Banner upload error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Помилка при завантаженні банера";
     return NextResponse.json(
-      { message: err.message || "Помилка при завантаженні банера" },
+      { message: errorMessage },
       { status: 500 }
     );
   }
@@ -65,9 +66,9 @@ export async function GET() {
       try {
         const stats = await stat(filePath);
         timestamp = stats.mtime.getTime();
-      } catch (err) {
+      } catch {
         // If stat fails, use current time
-        console.error("Error getting file stats:", err);
+        // Error already logged above
       }
     }
 
@@ -75,7 +76,7 @@ export async function GET() {
       path: "/sale-banner.png",
       timestamp: timestamp,
     });
-  } catch (err: any) {
+  } catch {
     return NextResponse.json({
       path: "/sale-banner.png",
       timestamp: Date.now(),
