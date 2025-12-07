@@ -74,6 +74,7 @@ export default async function Page({ searchParams }: PageProps) {
                 id:
                   | boolean
                   | Key
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   | ReactElement<unknown, string | JSXElementConstructor<any>>
                   | Iterable<ReactNode>
                   | Promise<
@@ -82,6 +83,7 @@ export default async function Page({ searchParams }: PageProps) {
                       | bigint
                       | boolean
                       | ReactPortal
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       | ReactElement<
                           unknown,
                           string | JSXElementConstructor<any>
@@ -97,6 +99,7 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   | ReactElement<unknown, string | JSXElementConstructor<any>>
                   | Iterable<ReactNode>
                   | ReactPortal
@@ -106,6 +109,7 @@ export default async function Page({ searchParams }: PageProps) {
                       | bigint
                       | boolean
                       | ReactPortal
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       | ReactElement<
                           unknown,
                           string | JSXElementConstructor<any>
@@ -123,6 +127,7 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   | ReactElement<unknown, string | JSXElementConstructor<any>>
                   | Iterable<ReactNode>
                   | ReactPortal
@@ -132,6 +137,7 @@ export default async function Page({ searchParams }: PageProps) {
                       | bigint
                       | boolean
                       | ReactPortal
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       | ReactElement<
                           unknown,
                           string | JSXElementConstructor<any>
@@ -149,6 +155,7 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   | ReactElement<unknown, string | JSXElementConstructor<any>>
                   | Iterable<ReactNode>
                   | ReactPortal
@@ -158,6 +165,7 @@ export default async function Page({ searchParams }: PageProps) {
                       | bigint
                       | boolean
                       | ReactPortal
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       | ReactElement<
                           unknown,
                           string | JSXElementConstructor<any>

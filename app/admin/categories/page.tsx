@@ -140,7 +140,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при збереженні");
       }
-    } catch (err: unknown) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setSaving(null);
@@ -175,7 +175,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при видаленні");
       }
-    } catch (err: unknown) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setDeleting(null);
@@ -216,7 +216,7 @@ export default function CategoriesAdmin() {
       } else {
         setError(data.message || "Помилка при створенні");
       }
-    } catch (err: unknown) {
+    } catch {
       setError("Помилка підключення до сервера");
     } finally {
       setSaving(null);

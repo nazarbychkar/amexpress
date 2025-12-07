@@ -19,7 +19,7 @@ export default function LoginPage() {
         if (data.authenticated) {
           router.push("/admin");
         }
-      } catch (err) {
+      } catch {
         // Not authenticated
       }
     };

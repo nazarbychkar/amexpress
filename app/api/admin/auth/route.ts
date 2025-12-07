@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
     const session = cookieStore.get("admin_session");
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     } else {
       return NextResponse.json({ authenticated: false });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({ authenticated: false });
   }
 }
@@ -65,7 +65,7 @@ export async function DELETE() {
     const cookieStore = await cookies();
     cookieStore.delete("admin_session");
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: true });
   }
 }

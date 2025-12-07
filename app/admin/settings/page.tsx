@@ -22,7 +22,7 @@ export default function SettingsPage() {
           router.push("/admin/login");
           return;
         }
-      } catch (err) {
+      } catch {
         router.push("/admin/login");
         return;
       }
@@ -34,7 +34,7 @@ export default function SettingsPage() {
           const data = await res.json();
           setTelegramChatId(data.telegramChatId || "");
         }
-      } catch (err) {
+      } catch {
         setError("Помилка завантаження налаштувань");
       } finally {
         setLoading(false);
@@ -78,7 +78,7 @@ export default function SettingsPage() {
     try {
       await fetch("/api/admin/auth", { method: "DELETE" });
       router.push("/admin/login");
-    } catch (err) {
+    } catch {
       router.push("/admin/login");
     }
   };

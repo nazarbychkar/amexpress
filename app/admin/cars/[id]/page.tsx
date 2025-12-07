@@ -9,7 +9,6 @@ export default function EditCarPage() {
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [formData, setFormData] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
