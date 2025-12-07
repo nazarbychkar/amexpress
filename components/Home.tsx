@@ -24,18 +24,33 @@ async function getBannerTimestamp() {
 export default async function HomePage() {
   const bannerTimestamp = await getBannerTimestamp();
   // Fetch all cars
-  const allCars = await prisma.car.findMany({
-    select: {
-      id: true,
-      title: true,
-      priceUSD: true,
-      photo: true,
-      category: true,
-      createdAt: true,
-      brand: true,
-      mark: true,
-    },
-  });
+  let allCars: Array<{
+    id: number;
+    title: string;
+    priceUSD: string;
+    photo: string | null;
+    category: string;
+    createdAt: Date;
+    brand: string;
+    mark: string;
+  }> = [];
+  try {
+    allCars = await prisma.car.findMany({
+      select: {
+        id: true,
+        title: true,
+        priceUSD: true,
+        photo: true,
+        category: true,
+        createdAt: true,
+        brand: true,
+        mark: true,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching cars:", error);
+    allCars = [];
+  }
 
   // Get unique brands and models
   const uniqueBrands = Array.from(

@@ -53,12 +53,18 @@ export default async function Category({
   const skip = (page - 1) * PAGE_SIZE;
 
   // Fetch all cars to get brands and models for filters
-  const allCars = await prisma.car.findMany({
-    select: {
-      brand: true,
-      mark: true,
-    },
-  });
+  let allCars: Array<{ brand: string; mark: string }> = [];
+  try {
+    allCars = await prisma.car.findMany({
+      select: {
+        brand: true,
+        mark: true,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching cars for filters:", error);
+    allCars = [];
+  }
 
   // Get unique brands and models
   const uniqueBrands = Array.from(
@@ -171,22 +177,35 @@ export default async function Category({
   }
 
   // Fetch cars with the filters applied
-  const cars = await prisma.car.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    skip,
-    take: PAGE_SIZE,
-    select: {
-      id: true,
-      title: true,
-      priceUSD: true,
-      photo: true,
-      category: true,
-    },
-  });
+  let cars: Array<{
+    id: number;
+    title: string;
+    priceUSD: string;
+    photo: string | null;
+    category: string;
+  }> = [];
+  let totalCars = 0;
+  try {
+    cars = await prisma.car.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: PAGE_SIZE,
+      select: {
+        id: true,
+        title: true,
+        priceUSD: true,
+        photo: true,
+        category: true,
+      },
+    });
 
-
-  const totalCars = await prisma.car.count({ where });
+    totalCars = await prisma.car.count({ where });
+  } catch (error) {
+    console.error("Error fetching cars:", error);
+    cars = [];
+    totalCars = 0;
+  }
   const totalPages = Math.ceil(totalCars / PAGE_SIZE);
 
   return (

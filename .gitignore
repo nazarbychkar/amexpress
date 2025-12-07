@@ -41,6 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 /lib/generated/prisma
+/lib/db.js
+/dist/db.js
 
 # data files (created dynamically)
 /data/categories.json
