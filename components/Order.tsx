@@ -165,7 +165,7 @@ export default function Order({ carInfo }: OrderProps = {}) {
                     Дані успішно надіслані!
                   </p>
                   <p className="text-gray-600 text-sm mt-2">
-                    Ми зв'яжемося з вами найближчим часом
+                    Ми зв&apos;яжемося з вами найближчим часом
                   </p>
                   {carInfo?.id && (
                     <p className="text-gray-500 text-xs mt-3">

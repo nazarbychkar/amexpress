@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function ImageUpload() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -122,10 +123,12 @@ export default function ImageUpload() {
           Поточний банер:
         </label>
         <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-100">
-          <img
+          <Image
             src={currentBanner}
             alt="Поточний банер"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            unoptimized
             onError={() => setCurrentBanner("/sale-banner.png")}
           />
         </div>
@@ -155,10 +158,11 @@ export default function ImageUpload() {
             Попередній перегляд:
           </label>
           <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden border-2 border-blue-300 bg-gray-100">
-            <img
+            <Image
               src={previewSrc}
               alt="Попередній перегляд"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
           </div>
         </div>

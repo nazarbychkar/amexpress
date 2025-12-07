@@ -59,14 +59,9 @@ export default async function HomePage() {
     modelsByBrand[brand].sort();
   });
 
-  // Shuffle and take 10 random cars
-  // Use Fisher-Yates shuffle algorithm for deterministic shuffling
-  const shuffledCars = [...allCars];
-  for (let i = shuffledCars.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledCars[i], shuffledCars[j]] = [shuffledCars[j], shuffledCars[i]];
-  }
-  const randomCars = shuffledCars.slice(0, 10);
+  // Take first 10 cars (deterministic selection for server-side rendering)
+  // Randomization should be handled client-side if needed
+  const randomCars = allCars.slice(0, 10);
 
   // Pick top 4 cars (for example top by newest)
   const topCars = allCars
