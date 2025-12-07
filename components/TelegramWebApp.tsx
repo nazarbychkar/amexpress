@@ -17,7 +17,19 @@ declare global {
         viewportHeight: number;
         viewportStableHeight: number;
         initData: string;
-        initDataUnsafe: any;
+        initDataUnsafe: {
+          user?: {
+            id: number;
+            first_name: string;
+            last_name?: string;
+            username?: string;
+            language_code?: string;
+            is_premium?: boolean;
+          };
+          query_id?: string;
+          auth_date?: number;
+          hash?: string;
+        };
         version: string;
         platform: string;
         colorScheme: "light" | "dark";

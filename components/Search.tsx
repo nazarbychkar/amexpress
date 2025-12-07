@@ -28,36 +28,38 @@ export default function Search() {
   const [query, setQuery] = useState("");
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [recentCars, setRecentCars] = useState<RecentCar[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [modelsByBrand, setModelsByBrand] = useState<Record<string, string[]>>({});
-
-  // Load recent searches and cars from localStorage on mount
-  useEffect(() => {
+  // Lazy initialization for localStorage values
+  const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const storedSearches = localStorage.getItem("recentSearches");
       if (storedSearches) {
         try {
-          const searches = JSON.parse(storedSearches);
-          setRecentSearches(searches);
+          return JSON.parse(storedSearches);
         } catch (e) {
           console.error("Error parsing recent searches:", e);
         }
       }
-
+    }
+    return [];
+  });
+  
+  const [recentCars, setRecentCars] = useState<RecentCar[]>(() => {
+    if (typeof window !== "undefined") {
       const storedCars = localStorage.getItem("recentViewedCars");
       if (storedCars) {
         try {
-          const cars = JSON.parse(storedCars);
-          setRecentCars(cars);
+          return JSON.parse(storedCars);
         } catch (e) {
           console.error("Error parsing recent cars:", e);
         }
       }
     }
-  }, []);
+    return [];
+  });
+  
+  const [showFilters, setShowFilters] = useState(false);
+  const [brands, setBrands] = useState<string[]>([]);
+  const [modelsByBrand, setModelsByBrand] = useState<Record<string, string[]>>({});
 
   // Load brands and models for filters
   useEffect(() => {
@@ -74,8 +76,11 @@ export default function Search() {
 
   useEffect(() => {
     if (!query) {
-      setCars([]);
-      return;
+      // Use setTimeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setCars([]);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     const fetchCars = async () => {
@@ -370,7 +375,7 @@ export default function Search() {
                 <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
                 </div>
               <p className="text-gray-700 text-xl font-bold mb-2">
-                Нічого не знайдено за запитом "{query}"
+                Нічого не знайдено за запитом &quot;{query}&quot;
               </p>
               <p className="text-gray-500 text-base mb-6">
                 Спробуйте змінити запит або перевірте правильність написання

@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Ignore generated Prisma files
     "lib/generated/**",
     "dist/**",
+    // Ignore compiled JavaScript files
+    "lib/db.js",
   ]),
 ]);
 

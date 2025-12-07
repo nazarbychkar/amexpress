@@ -62,9 +62,10 @@ export default function Footer() {
         setSubmitted(false);
         setIsModalOpen(false);
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error submitting form:", err);
-      setError(err.message || "Помилка відправки даних. Спробуйте ще раз.");
+      const errorMessage = err instanceof Error ? err.message : "Помилка відправки даних. Спробуйте ще раз.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -285,7 +286,7 @@ export default function Footer() {
               onClick={() => setIsModalOpen(true)}
               className="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors uppercase text-sm"
             >
-              Зв'язатися з нами
+              Зв&apos;язатися з нами
             </button>
           </div>
         </div>
@@ -323,7 +324,7 @@ export default function Footer() {
 
             <div className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Зв'язатися з нами
+                Зв&apos;язатися з нами
               </h2>
 
               {/* Telegram Link */}
@@ -373,7 +374,7 @@ export default function Footer() {
                     Дані успішно надіслані!
                   </p>
                   <p className="text-gray-600 text-sm mt-2">
-                    Ми зв'яжемося з вами найближчим часом
+                    Ми зв&apos;яжемося з вами найближчим часом
                   </p>
                 </div>
               ) : (
@@ -385,14 +386,14 @@ export default function Footer() {
                   )}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Ім'я
+                      Ім&apos;я
                     </label>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      placeholder="Ваше ім'я"
+                      placeholder="Ваше ім&apos;я"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
                     />
                   </div>
@@ -415,7 +416,7 @@ export default function Footer() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Повідомлення (необов'язково)
+                      Повідомлення (необов&apos;язково)
                     </label>
                     <textarea
                       value={message}
