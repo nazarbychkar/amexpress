@@ -95,24 +95,18 @@ export default async function Page({ searchParams }: PageProps) {
                 id:
                   | boolean
                   | Key
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
                   | Iterable<ReactNode>
                   | Promise<
                       | string
                       | number
                       | bigint
-                      | boolean
-                      | ReactPortal
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
+                  | boolean
+                  | ReactPortal
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+                  | Iterable<ReactNode>
+                  | null
+                  | undefined
                     >
                   | null
                   | undefined;
@@ -121,24 +115,19 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
                   | Iterable<ReactNode>
                   | ReactPortal
                   | Promise<
                       | string
                       | number
                       | bigint
-                      | boolean
-                      | ReactPortal
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
+                  | boolean
+                  | ReactPortal
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+                  | Iterable<ReactNode>
+                  | null
+                  | undefined
                     >
                   | null
                   | undefined;
@@ -147,24 +136,19 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
                   | Iterable<ReactNode>
                   | ReactPortal
                   | Promise<
                       | string
                       | number
                       | bigint
-                      | boolean
-                      | ReactPortal
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
+                  | boolean
+                  | ReactPortal
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+                  | Iterable<ReactNode>
+                  | null
+                  | undefined
                     >
                   | null
                   | undefined;
@@ -173,24 +157,19 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
                   | Iterable<ReactNode>
                   | ReactPortal
                   | Promise<
                       | string
                       | number
                       | bigint
-                      | boolean
-                      | ReactPortal
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
+                  | boolean
+                  | ReactPortal
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+                  | Iterable<ReactNode>
+                  | null
+                  | undefined
                     >
                   | null
                   | undefined;
@@ -199,24 +178,19 @@ export default async function Page({ searchParams }: PageProps) {
                   | number
                   | bigint
                   | boolean
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
                   | Iterable<ReactNode>
                   | ReactPortal
                   | Promise<
                       | string
                       | number
                       | bigint
-                      | boolean
-                      | ReactPortal
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
+                  | boolean
+                  | ReactPortal
+                  | ReactElement<unknown, string | JSXElementConstructor<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+                  | Iterable<ReactNode>
+                  | null
+                  | undefined
                     >
                   | null
                   | undefined;
